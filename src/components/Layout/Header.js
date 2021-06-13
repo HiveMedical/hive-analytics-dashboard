@@ -29,6 +29,7 @@ import {
   PopoverBody,
 } from 'reactstrap';
 import bn from 'utils/bemnames';
+import AuthForm from '../AuthForm';
 
 const bem = bn.create('header');
 
@@ -135,11 +136,9 @@ class Header extends React.Component {
             >
               <PopoverBody className="p-0 border-light">
                 <UserCard
-                  title="Jane"
-                  subtitle="jane@jane.com"
-                  text="Last updated 3 mins ago"
+                  title = {AuthForm.defaultProps.FullNameInputProps.inputvalue}
                   className="border-light"
-                >
+                > 
                   <ListGroup flush>
                     <ListGroupItem tag="button" action className="border-light">
                       <MdPersonPin /> Profile
