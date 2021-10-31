@@ -16,7 +16,7 @@ const genLineData = (moreData = {}, moreData2 = {}) => {
     labels: MONTHS,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: 'With Hive',
         backgroundColor: getColor('primary'),
         borderColor: getColor('primary'),
         borderWidth: 1,
@@ -32,7 +32,7 @@ const genLineData = (moreData = {}, moreData2 = {}) => {
         ...moreData,
       },
       {
-        label: 'Dataset 2',
+        label: 'No Hive',
         backgroundColor: getColor('secondary'),
         borderColor: getColor('secondary'),
         borderWidth: 1,
@@ -72,7 +72,7 @@ const genPieData = () => {
 
 const ChartPage = () => {
   return (
-    <Page title="Charts" breadcrumbs={[{ name: 'Charts', active: true }]}>
+    <Page title="Last Connection" breadcrumbs={[{ name: 'Last Connection', active: true }]}>
       <Row>
         <Col xl={6} lg={12} md={12}>
           <Card>
@@ -92,7 +92,7 @@ const ChartPage = () => {
           </Card>
         </Col>
       </Row>
-
+{/*
       <Row>
         <Col xl={6} lg={12} md={12}>
           <Card>
@@ -175,6 +175,7 @@ const ChartPage = () => {
           </Card>
         </Col>
       </Row>
+*/}
     </Page>
   );
 };

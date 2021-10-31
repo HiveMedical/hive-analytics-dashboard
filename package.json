@@ -4,6 +4,7 @@
   "private": false,
   "homepage": "http://hellboy95.github.io/react-reduction/login",
   "dependencies": {
+    "aws-sdk": "^2.999.0",
     "axios": "^0.19.2",
     "bootstrap": "4.3.1",
     "chart.js": "2.7.2",

@@ -1,7 +1,9 @@
 import bg11Image from 'assets/img/bg/background_1920-11.jpg';
 import bg18Image from 'assets/img/bg/background_1920-18.jpg';
-import bg1Image from 'assets/img/bg/background_640-1.jpg';
-import bg3Image from 'assets/img/bg/background_640-3.jpg';
+// import bg1Image from 'assets/img/bg/background_640-1.jpg';
+// import bg3Image from 'assets/img/bg/background_640-3.jpg';
+import bg1Image from 'assets/img/device/1.png';
+import bg3Image from 'assets/img/device/2.png';
 import user1Image from 'assets/img/users/100_1.jpg';
 import { UserCard } from 'components/Card';
 import Page from 'components/Page';
@@ -26,7 +28,7 @@ import {
 
 const CardPage = () => {
   return (
-    <Page title="Cards" breadcrumbs={[{ name: 'cards', active: true }]}>
+    <Page title="Devices" breadcrumbs={[{ name: 'devices', active: true }]}>
       <Row>
         <Col md={6} sm={6} xs={12} className="mb-3">
           <Card className="flex-row">
@@ -36,10 +38,9 @@ const CardPage = () => {
               style={{ width: 'auto', height: 150 }}
             />
             <CardBody>
-              <CardTitle>Horizontal Image Card(Left)</CardTitle>
+              <CardTitle>Virtual Gateway</CardTitle>
               <CardText>
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
+                Some quick example text to describe the device.
               </CardText>
             </CardBody>
           </Card>
@@ -48,8 +49,8 @@ const CardPage = () => {
         <Col md={6} sm={6} xs={12} className="mb-3">
           <Card className="flex-row">
             <CardBody>
-              <CardTitle>Horizontal Image Card(Right)</CardTitle>
-              <CardText>Some quick example card</CardText>
+              <CardTitle>Medical Pump</CardTitle>
+              <CardText>Some quick example device description.</CardText>
             </CardBody>
             <CardImg
               className="card-img-right"
@@ -59,6 +60,7 @@ const CardPage = () => {
           </Card>
         </Col>
       </Row>
+{/* 
       <Row>
         <Col md={6} sm={6} xs={12} className="mb-3">
           <Card>
@@ -219,6 +221,7 @@ const CardPage = () => {
           </Col>
         ))}
       </Row>
+*/}
     </Page>
   );
 };
