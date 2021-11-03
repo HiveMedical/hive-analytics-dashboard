@@ -2,6 +2,8 @@ import logo200Image from 'assets/img/logo/hive-logo.png';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Form, FormGroup, Input, Label, UncontrolledAlert } from 'reactstrap';
+import { BrowserRouter, Route } from 'react-router-dom';
+import authToken from 'utils/authToken';
 
 
 class AuthForm extends React.Component {
@@ -26,7 +28,10 @@ class AuthForm extends React.Component {
   get isSignup() {
     return this.props.authState === STATE_SIGNUP;
   }
-  
+
+  static contextTypes = {
+    router: PropTypes.object
+  }
  
 
   changeAuthState = authState => event => {
@@ -45,17 +50,16 @@ class AuthForm extends React.Component {
       
       console.log("The username:", this.props.username);
       console.log("Inside login function");
-        fetch('https://spc89vwj89.execute-api.us-west-1.amazonaws.com/Production', {
+        //fetch('https://spc89vwj89.execute-api.us-west-1.amazonaws.com/Production', {
+        fetch('https://nwer0fflqd.execute-api.us-west-1.amazonaws.com/521_Token_Stage', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            pathParameters:{
-              username: this.state.username,
-              password: this.state.password,
-            }
+              User_ID: this.state.username,
+              Password: this.state.password,
           })
         })
         .then(response => response.json())
@@ -64,34 +68,46 @@ class AuthForm extends React.Component {
             validateLoginResponse: response
           })
           this.state.validateLoginStatus = this.state.validateLoginResponse.statusCode;
+          console.log('response login', response);
          
-          if(this.state.validateLoginStatus==200){
-            console.log("inside 200");
-            this.props.history.push('/');
+          if(this.state.validateLoginStatus==200 && this.state.validateLoginResponse.body.state == 1){
+            console.log("inside 200 and got user");
+            authToken.setToken(this.state.validateLoginResponse.body.token, this.state.validateLoginResponse.body.userinfo);
+            this.context.router.history.push('/');
           }
           else{
-            // alert(this.state.username + 'is not a valid username!');
+            alert(this.state.username + ' is not a valid username or incorrect password!');
           }
         })
         .catch(err => { console.log(err); 
         });
     }else if(this.props.authState=='SIGNUP'){
+
+      if(this.state.birthday) var bday = this.state.birthday.split('/');
+      if(!this.state.birthday || bday.length != 3){
+        alert('Birthday format not correct: MM/DD/YYYY');
+        return false;
+      }
     
       console.log("Inside Registration function");
-        fetch('https://j982ampfu3.execute-api.us-west-1.amazonaws.com/Production/insert', {
+        // fetch('https://j982ampfu3.execute-api.us-west-1.amazonaws.com/Production/insert', {
+        fetch('https://rdu5hrg5aj.execute-api.us-west-1.amazonaws.com/521_Signup_Stage', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            User_Id : `USERNAME#${this.state.username}`,
-            Device_Id: `DEVICE#${this.state.deviceid}`,
-            User_Password: this.state.password,
-            User_Fullname: this.state.fullname,
-            Doctor_Name: this.state.doctorname,
-            Doctor_Id: this.state.doctorid,
-            Patient_Id: this.state.patientid
+            User_ID : this.state.username,
+            Email: this.state.email,
+            Role: 0,
+            Password: this.state.password,
+            Birth_Year: bday[2],
+            Birth_Mon: bday[0],
+            Birth_Day: bday[1],
+            Signup_Time: Math.floor(Date.now()/1000),
+            User_Name: this.state.fullname,
+            Doctor_ID: this.state.doctorid
           })
         })
         .then(response => response.json())
@@ -103,7 +119,9 @@ class AuthForm extends React.Component {
          
           if(this.state.validateLoginStatus==200){
             console.log("inside 200");
-            this.props.history.push('/');
+            alert('You have been successfully signed up. Go login.');
+            window.location.reload(false);
+            //this.context.router.history.push('/login-modal');
           }
           else{
             // alert(this.state.username + 'is not a valid username!');
@@ -144,14 +162,12 @@ class AuthForm extends React.Component {
       onLogoClick,
       FullNameLabel,
       FullNameInputProps,
-      DoctorNameLabel,
-      DoctorNameInputProps,
+      EmailLabel,
+      EmailInputProps,
       DoctorIdLabel,
       DoctorIdInputProps,
-      PatientIdLabel,
-      PatienIdInputProps,
-      DeviceIdLabel,
-      DeviceIdInputProps
+      BirthdayLabel,
+      BirthdayInputProps
     } = this.props;
 
     console.log("The props:", this.props)
@@ -198,10 +214,10 @@ class AuthForm extends React.Component {
             this.setState({ fullname: e.target.value })}} {...FullNameInputProps} />
           </FormGroup>
           <FormGroup>
-          <Label for={DoctorNameLabel}>{DoctorNameLabel}</Label>
+          <Label for={EmailLabel}>{EmailLabel}</Label>
           <Input onChange={e => {
-            DoctorNameInputProps.inputvalue = e.target.value
-            this.setState({ doctorname: e.target.value })}} {...DoctorNameInputProps} />
+            EmailInputProps.inputvalue = e.target.value
+            this.setState({ email: e.target.value })}} {...EmailInputProps} />
           </FormGroup>
           <FormGroup>
           <Label for={DoctorIdLabel}>{DoctorIdLabel}</Label>
@@ -210,23 +226,17 @@ class AuthForm extends React.Component {
             this.setState({ doctorid: e.target.value })}} {...DoctorIdInputProps} />
         </FormGroup>
         <FormGroup>
-          <Label for={PatientIdLabel}>{PatientIdLabel}</Label>
+          <Label for={BirthdayLabel}>{BirthdayLabel}</Label>
           <Input onChange={e => {
-            PatienIdInputProps.inputvalue = e.target.value
-            this.setState({ patientid: e.target.value })}}
-             {...PatienIdInputProps} />
-        </FormGroup>
-        <FormGroup>
-          <Label for={DeviceIdLabel}>{DeviceIdLabel}</Label>
-          <Input onChange={e => {
-            DeviceIdInputProps.inputvalue = e.target.value
-            this.setState({ deviceid: e.target.value })}} {...DeviceIdInputProps} />
+            BirthdayInputProps.inputvalue = e.target.value
+            this.setState({ birthday: e.target.value })}}
+             {...BirthdayInputProps} />
         </FormGroup>
         </>
         )}
         <FormGroup check>
           <Label check>
-            <Input type="checkbox" />{' '}
+            <Input type="checkbox" checked />{' '}
             {this.isSignup ? 'Agree the terms and policy' : 'Remember me'}
           </Label>
         </FormGroup>
@@ -283,14 +293,12 @@ AuthForm.propTypes = {
   onLogoClick: PropTypes.func,
   FullNameLabel: PropTypes.string,
   FullNameInputProps: PropTypes.object,
-  DoctorNameLabel: PropTypes.string,
-  DoctorNameInputProps: PropTypes.object,
+  EmailLabel: PropTypes.string,
+  EmailInputProps: PropTypes.object,
   DoctorIdLabel: PropTypes.string,
   DoctorIdInputProps: PropTypes.object,
-  PatientIdLabel: PropTypes.string,
-  PatienIdInputProps: PropTypes.object,
-  DeviceIdLabel: PropTypes.string,
-  DeviceIdInputProps: PropTypes.object,
+  BirthdayLabel: PropTypes.string,
+  BirthdayInputProps: PropTypes.object,
 };
 
 AuthForm.defaultProps = {
@@ -320,10 +328,10 @@ AuthForm.defaultProps = {
     placeholder: 'Your full name',
     inputvalue: ''
   },
-  DoctorNameLabel: 'Doctor Name',
-  DoctorNameInputProps: {
+  EmailLabel: 'Email',
+  EmailInputProps: {
     type: 'string',
-    placeholder: 'Doctors name',
+    placeholder: 'hive@hive.com',
     inputvalue: ''
   },
   DoctorIdLabel: 'Doctor ID',
@@ -332,16 +340,10 @@ AuthForm.defaultProps = {
     placeholder: 'Doctors ID',
     inputvalue: ''
   },
-  PatientIdLabel: 'Patient ID',
-  PatienIdInputProps: {
+  BirthdayLabel: 'Birthday',
+  BirthdayInputProps: {
     type: 'string',
-    placeholder: 'Patient ID',
-    inputvalue: ''
-  },
-  DeviceIdLabel: 'HIVE Device ID',
-  DeviceIdInputProps: {
-    type: 'string',
-    placeholder: 'HIVE device ID',
+    placeholder: 'MM/DD/YYYY',
     inputvalue: ''
   },
 
