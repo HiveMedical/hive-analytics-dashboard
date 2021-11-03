@@ -29,6 +29,9 @@ import {
   PopoverBody,
 } from 'reactstrap';
 import bn from 'utils/bemnames';
+import PropTypes from 'prop-types';
+import { BrowserRouter, Route } from 'react-router-dom';
+import authToken from 'utils/authToken';
 
 const bem = bn.create('header');
 
@@ -50,6 +53,18 @@ class Header extends React.Component {
     isOpenNotificationPopover: false,
     isNotificationConfirmed: false,
     isOpenUserCardPopover: false,
+    token: null,
+    userinfo: null
+  };
+
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
+  signout = () => {
+    authToken.clearToken();
+    this.toggleUserCardPopover();
+    this.context.router.history.push('/login-modal');
   };
 
   toggleNotificationPopover = () => {
@@ -77,6 +92,8 @@ class Header extends React.Component {
 
   render() {
     const { isNotificationConfirmed } = this.state;
+    this.token = authToken.getToken();
+    this.userinfo = authToken.getUserinfo();
 
     return (
       <Navbar light expand className={bem.b('bg-white')}>
@@ -86,9 +103,12 @@ class Header extends React.Component {
           </Button>
         </Nav>
         <Nav navbar>
+        {!!this.token &&
           <SearchInput />
+        }
         </Nav>
 
+      {!!this.token &&
         <Nav navbar className={bem.e('nav-right')}>
           <NavItem className="d-inline-flex">
             <NavLink id="Popover1" className="position-relative">
@@ -135,8 +155,8 @@ class Header extends React.Component {
             >
               <PopoverBody className="p-0 border-light">
                 <UserCard
-                  title="Jane"
-                  subtitle="jane@jane.com"
+                  title={this.userinfo.User_Name}
+                  subtitle={this.userinfo.Email}
                   text="Last updated 3 mins ago"
                   className="border-light"
                 >
@@ -156,7 +176,7 @@ class Header extends React.Component {
                     <ListGroupItem tag="button" action className="border-light">
                       <MdHelp /> Help
                     </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    <ListGroupItem tag="button" action className="border-light" onClick={this.signout}>
                       <MdExitToApp /> Signout
                     </ListGroupItem>
                   </ListGroup>
@@ -165,6 +185,7 @@ class Header extends React.Component {
             </Popover>
           </NavItem>
         </Nav>
+      }
       </Navbar>
     );
   }
