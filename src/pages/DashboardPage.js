@@ -44,10 +44,8 @@ import {
   Row,
 } from 'reactstrap';
 import { getColor } from 'utils/colors';
-import AuthForm from '../components/AuthForm';
-import _ from 'lodash';
-import authToken from 'utils/authToken';
-import { Redirect } from 'react-router';
+import AuthForm from '../components/AuthForm'
+import _ from 'lodash'
 
 const today = new Date();
 const lastWeek = new Date(
@@ -110,20 +108,11 @@ class DashboardPage extends React.Component {
     return formatted;
   }
 
-  Timeparse2sec(datestr){
-    if(!datestr) return;
-    var time = datestr.split(' ')[0];
-    var hr_min_sec = time.split(':');
-    return parseInt(hr_min_sec[3]) + hr_min_sec[2]*60 + hr_min_sec[1]*60*60;
-  }
-
   componentDidMount() {
     // this is needed, because InfiniteCalendar forces window scroll
     window.scrollTo(0, 0);
 
     var self = this;
-    var userinfo = authToken.getUserinfo();
-    if(!userinfo) return;
 
     // let userDataURL = "https://pv9z9cd9b0.execute-api.us-west-1.amazonaws.com/Prod/getdata"
     // const userName = AuthForm.defaultProps.usernameInputProps.inputvalue
@@ -157,7 +146,7 @@ class DashboardPage extends React.Component {
             "#user": "User_ID"
         },
         ExpressionAttributeValues: {
-            ":userid": userinfo.User_ID,
+            ":userid": "1",
         }
     };
 
@@ -167,31 +156,28 @@ class DashboardPage extends React.Component {
       } else {
           console.log("Scan succeeded.");
           var latest_dis = 0;
-          var first_dis = data.Items[0]?self.Timeparse2sec(data.Items[0].Disconnected_At):{};
+          var first_dis = data.Items[0]?data.Items[0].Disconnected_At:{};
           var latest_state = {};
           var first_state = {};
           data.Items.forEach(function(item) {
-            if(self.Timeparse2sec(item.Disconnected_At) > latest_dis){
-              latest_dis = self.Timeparse2sec(item.Disconnected_At);
+            if(item.Disconnected_At > latest_dis){
+              latest_dis = item.Disconnected_At;
               latest_state = item;
             }
-            if(self.Timeparse2sec(item.Disconnected_At) <= first_dis){
-              first_dis = self.Timeparse2sec(item.Disconnected_At);
+            if(item.Disconnected_At <= first_dis){
+              first_dis = item.Disconnected_At;
               first_state = item;
             }
-            item.duration = self.Timeparse2sec(item.Disconnected_At) - self.Timeparse2sec(item.Connection_Start);
-            //self.Timeparse2sec(item.Disconnected_At)
+            item.duration = item.Disconnected_At - item.Connection_Start;
           });
-          if(data.Items.length > 0){
-            self.Dsum(self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(latest_state.Connection_Start),
-              data.Items.length,
-              self.Timeparse2sec(latest_state.Connection_Start),
-              self.Timeparse2sec(latest_state.Disconnected_At),
-              latest_state.Device_ID,
-              ((self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(first_state.Disconnected_At))/60/60/24).toFixed(2)
-            );
-            self.setState({PatData: data.Items});
-          }
+          self.Dsum(latest_state.Disconnected_At - latest_state.Connection_Start,
+            data.Items.length,
+            latest_state.Connection_Start,
+            latest_state.Disconnected_At,
+            latest_state.Device_ID,
+            ((Date.now()/1000 - first_state.Disconnected_At)/60/60/24).toFixed(2)
+          );
+          self.setState({PatData: data.Items});
 
           // continue scanning if we have more items
           // scan can retrieve a maximum of 1MB of data
@@ -207,12 +193,6 @@ class DashboardPage extends React.Component {
    
   }
   render() {
-
-    var token = authToken.getToken();
-    if(!token){
-      return (<Redirect to="/login-modal" />);
-    }
-
     const primaryColor = getColor('primary');
     const secondaryColor = getColor('secondary'); 
     console.log("Dur", this.state.dur);
@@ -235,13 +215,13 @@ class DashboardPage extends React.Component {
           <Col lg={3} md={6} sm={6} xs={12}>
             <NumberWidget
               title="Total Duration Connected (sec)"
-              subtitle={"Disconnected at "+this.state.Disconnected_At}
+              subtitle={"Disconnected at "+this.Dateformat(this.state.Disconnected_At)}
               //number={Math.trunc(this.state.dur/60)}
-              number={this.state.dur?this.state.dur:0}
+              number={this.state.dur}
               color="primary"
               progress=
               {{
-                value: this.state.dur?(this.state.dur/0.12).toFixed(2):0,
+                value: (this.state.dur/0.12).toFixed(2),
                 // label: 'Last month',
               }}
             />
@@ -264,10 +244,10 @@ class DashboardPage extends React.Component {
             <NumberWidget
               title="Estimated Drug Intake"
               subtitle="Total: 500 ml"
-              number={this.state.dur?this.state.dur*20:0+" ml"}
+              number={this.state.dur*20+" ml"}
               color="info"
               progress={{
-                value: this.state.dur?(this.state.dur*20/5).toFixed(2):0,
+                value: (this.state.dur*20/5).toFixed(2),
                 // label: 'Last month',
               }}
             />
@@ -277,10 +257,10 @@ class DashboardPage extends React.Component {
             <NumberWidget
               title="Treatment Length"
               subtitle="Total: 60 days"
-              number={this.state.TreatLen?this.state.TreatLen:0+" Days"}
+              number={this.state.TreatLen+" Days"}
               color="warning"
               progress={{
-                value: this.state.TreatLen?(this.state.TreatLen/0.6).toFixed(2):0,
+                value: (this.state.TreatLen/0.6).toFixed(2),
                 // label: 'Last month',
               }}
             />
@@ -585,10 +565,10 @@ class DashboardPage extends React.Component {
                   Array.isArray(pd_sorted) && pd_sorted.map(friend => {
                       return <tr key={friend.ts}>
                           <td>{friend.Device_Name?friend.Device_Name:friend.Device_ID}</td>
-                          <td>{friend.Connection_Start}</td>
-                          <td>{friend.Disconnected_At}</td>
+                          <td>{this.Dateformat(friend.Connection_Start)}</td>
+                          <td>{this.Dateformat(friend.Disconnected_At)}</td>
                           <td>{friend.duration}</td>
-                          <td className={((this.Timeparse2sec(friend.Disconnected_At) - this.Timeparse2sec(friend.Connection_Start))*20/5)>550?"text-secondary":""}>{((this.Timeparse2sec(friend.Disconnected_At) - this.Timeparse2sec(friend.Connection_Start))*20/5)>550?"Overdose":"Normal"}</td>
+                          <td className={(this.state.dur*20/5)>550?"text-secondary":""}>{(this.state.dur*20/5)>550?"Overdose":"Normal"}</td>
                       </tr>
                   })}
               </tbody>

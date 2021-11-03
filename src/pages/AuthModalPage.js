@@ -47,12 +47,12 @@ class AuthModalPage extends React.Component {
 
     return (
       <Page
-        title="Sign in"
-        breadcrumbs={[{ name: 'login', active: true }]}>
+        title="Login Modal"
+        breadcrumbs={[{ name: 'login modal', active: true }]}>
         <Row>
           <Col md="12" sm="12" xs="12">
             <Card>
-              <CardHeader>Hive Login</CardHeader>
+              <CardHeader>Login Modal Example</CardHeader>
               <CardBody>
                 <Button color="danger" onClick={this.toggle}>
                   Click to Login

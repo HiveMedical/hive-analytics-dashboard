@@ -36,7 +36,6 @@ import {
   NavLink as BSNavLink,
 } from 'reactstrap';
 import bn from 'utils/bemnames';
-import authToken from 'utils/authToken';
 
 const sidebarBackground = {
   backgroundImage: `url("${sidebarBgImage}")`,
@@ -81,7 +80,7 @@ const pageContents = [
   },
 ];
 
-var navItems = [
+const navItems = [
   { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
   { to: '/cards', name: 'Device', exact: false, Icon: MdWeb },
   { to: '/charts', name: 'Treatment Plan', exact: false, Icon: MdInsertChart },
@@ -107,26 +106,7 @@ class Sidebar extends React.Component {
     });
   };
 
-  decideSidebar() {
-    var token = authToken.getToken();
-    if(!token){
-      navItems = [{to: '/login-modal', name: 'Login', exact: true, Icon: MdDashboard}];
-    }else{
-      navItems = [
-        { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
-        { to: '/cards', name: 'Device', exact: false, Icon: MdWeb },
-        { to: '/charts', name: 'Treatment Plan', exact: false, Icon: MdInsertChart },
-        //{ to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },
-      ];
-    }
-  };
-
-  componentDidMount() {
-    this.decideSidebar();
-  };
-
   render() {
-    this.decideSidebar();
     return (
       <aside className={bem.b()} data-image={sidebarBgImage}>
         <div className={bem.e('background')} style={sidebarBackground} />
