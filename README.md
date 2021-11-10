@@ -85,15 +85,13 @@ react-reduction -> AWS API Gateway -> Lambda -> DynamoDB
 ### If user login verification is needed (for authorized pages)
 
 1.  Import the below modules
-`
-import authToken from 'utils/authToken';
-import { Redirect } from 'react-router';
-`
+
+    import authToken from 'utils/authToken';
+    import { Redirect } from 'react-router';
 
 2.  Add the below code to the very beginning of the `render` function
-`
-var token = authToken.getToken();
-if(!token){
-  return (<Redirect to="/login-modal" />);
-}
-`
+
+    var token = authToken.getToken();
+    if(!token){
+        return (<Redirect to="/login-modal" />);
+    }
