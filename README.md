@@ -21,12 +21,12 @@ Branch Name: zebo-521
 ### Important files:
 
 Dashboard Page: src/pages/DashboardPage.js
-Device Page:    src/pages/CardPage.js
-Login:          src/pages/AuthModalPage.js
-Sign-in/up:     src/components/AuthForm.js
-Header:         src/components/Layout/Header.js
-Sidebar:        src/components/Layout/Sidebar.js
-Token API:      src/utils/authToken.js
+Device Page: src/pages/CardPage.js
+Login: src/pages/AuthModalPage.js
+Sign-in/up: src/components/AuthForm.js
+Header: src/components/Layout/Header.js
+Sidebar: src/components/Layout/Sidebar.js
+Token API: src/utils/authToken.js
 
 ### AWS users/roles (IAM):
 
@@ -44,25 +44,25 @@ react-reduction -> AWS API Gateway -> Lambda -> DynamoDB
 2.  Add UI (HTML) to the return content of the `render` function
 3.  Add backend code to the `componentDidMount` function (data that is rendered on the webpage should be in `this.state` of the class)
 4.  Setup Lamda function (Please see Lamda functions with `521_` prefix as examples)
-	a) Create DynamoDB table if no existing table is suitable (https://us-west-1.console.aws.amazon.com/dynamodbv2/home?region=us-west-1#tables)
-	b) Open AWS Lambda (https://us-west-1.console.aws.amazon.com/lambda/home?region=us-west-1#/discover)
-	c) Create function if no existing Lambda function is suitable (Select Author from scratch)
-	d) Go to Configuration -> Permissions -> Change the Execution role to `521_token-role-keueolcf` (or change it when creating function)
-	e) Go to Code -> Copy code from other Lambda function with `521_` prefix
-	f) Manipulate with database (Query/Scan/Insert/Update) and return response (Should comform to API format specified below)
-	g) Test until it works as you desire
-	h) Check database if it reflects what your code does
+    a) Create DynamoDB table if no existing table is suitable (https://us-west-1.console.aws.amazon.com/dynamodbv2/home?region=us-west-1#tables)
+    b) Open AWS Lambda (https://us-west-1.console.aws.amazon.com/lambda/home?region=us-west-1#/discover)
+    c) Create function if no existing Lambda function is suitable (Select Author from scratch)
+    d) Go to Configuration -> Permissions -> Change the Execution role to `521_token-role-keueolcf` (or change it when creating function)
+    e) Go to Code -> Copy code from other Lambda function with `521_` prefix
+    f) Manipulate with database (Query/Scan/Insert/Update) and return response (Should comform to API format specified below)
+    g) Test until it works as you desire
+    h) Check database if it reflects what your code does
 5.  Setup AWS API (Please see APIs with `521_` prefix as examples)
-	a) Open AWS API Gateway (https://us-west-1.console.aws.amazon.com/apigateway/main/apis?region=us-west-1)
-	b) Create API if no existing API is suitable (Select REST API with complete control. Select the Lambda function created from above)
-	c) Action -> Create Method -> ANY
-	d) This step is only for CORS (can skip if request from the same domain):
-		d.i)   Method Response -> 200 -> Add header names: `Access-Control-Allow-Headers`, `Access-Control-Allow-Methods` and `Access-Control-Allow-Origin`
-		d.ii)  Integration Response -> 200 -> Header Mappings -> Add header values: `'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'`, `'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'` and `'*'`
-		d.iii) Action -> Enable CORS
-	e) Deploy API
-	f) Create a stage or use an exsitin stage
-	g) The `Invoke URL` is your API entry
+    a) Open AWS API Gateway (https://us-west-1.console.aws.amazon.com/apigateway/main/apis?region=us-west-1)
+    b) Create API if no existing API is suitable (Select REST API with complete control. Select the Lambda function created from above)
+    c) Action -> Create Method -> ANY
+    d) This step is only for CORS (can skip if request from the same domain):
+        d.i)   Method Response -> 200 -> Add header names: `Access-Control-Allow-Headers`, `Access-Control-Allow-Methods` and `Access-Control-Allow-Origin`
+        d.ii)  Integration Response -> 200 -> Header Mappings -> Add header values: `'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'`, `'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'` and `'*'`
+        d.iii) Action -> Enable CORS
+    e) Deploy API
+    f) Create a stage or use an exsitin stage
+    g) The `Invoke URL` is your API entry
 6.  Request to the API by the `fetch` function (e.g., the `fetch` statements inside `componentDidMount` of CardPage.js)
 7.  Do whatever is needed in the `response` handler function (e.g., the `then(response => {` statements inside `componentDidMount` of CardPage.js)
 
