@@ -67,20 +67,20 @@ react-reduction -> AWS API Gateway -> Lambda -> DynamoDB
 7.  Do whatever is needed in the `response` handler function (e.g., the `then(response => {` statements inside `componentDidMount` of CardPage.js)
 
 ### API format
-`
-{  
-  "statusCode": 200,  
-  "headers": {  
-    "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",  
-    "Access-Control-Allow-Origin": "*",  
-    "Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT"  
-  },  
-  "body": {  
-    "state": 1, # 1: manipulate database success, -1: fail  
-    "[[data]]": # [] or {}  
-  }  
-}
-`
+
+    {
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT"
+        },
+        "body": {
+            "state": 1, # 1: manipulate database success, -1: fail
+            "[[data]]": # [] or {}
+        }
+    }
+
 
 ### If user login verification is needed (for authorized pages)
 
