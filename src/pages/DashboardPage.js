@@ -56,14 +56,6 @@ const lastWeek = new Date(
   today.getDate() - 7,
 );
 
-var AWS = require("aws-sdk");
-AWS.config.update({
-  // hive account [[***** MAKE SURE THE GIT REPO IS PRIVATE or THIS INFO IS IN A FILE IN .gitignore | going to change this to API request, no db access on client *****]]
-  region: "us-west-1",
-  accessKeyId: '{{accessKeyId}}',
-  secretAccessKey: '{{secretAccessKey}}',
-  endpoint: "https://dynamodb.us-west-1.amazonaws.com"
-});
 
 var DuraSum='' ;
 var count = 0;
@@ -118,88 +110,64 @@ class DashboardPage extends React.Component {
     if(!userinfo) return;
 
     // let userDataURL = "https://pv9z9cd9b0.execute-api.us-west-1.amazonaws.com/Prod/getdata"
-    // const userName = AuthForm.defaultProps.usernameInputProps.inputvalue
-    // fetch(userDataURL += '?' + 'userName='+ userName.toString(), {
-    //   "method": "GET"
-    // })
-    // .then(response => response.json())
-    // .then(response => {
-    //   this.setState({
-    //     PatData: response
-    //   })
-    //   this.state.PatData.map(object => {
-    //     DuraSum = +DuraSum + +object.Duration;
-    //     count++;
-    //   })
-    //   this.Dsum(DuraSum,count);
+    const userName = AuthForm.defaultProps.usernameInputProps.inputvalue
+    // += '?' + 'userName='+ userName.toString()
+    fetch('https://cxlnioef6d.execute-api.us-west-1.amazonaws.com/521_getPatientData_stage/', {
+      method : 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          User_ID: userinfo.User_ID,
+      })
+    })
+    .then(response => response.json())
+    
+    .then(response => {
+      console.log(response)
 
-    // })
-    // .catch(err => { console.log(err); 
-    // });
-
-    var docClient = new AWS.DynamoDB.DocumentClient();
+      if (response.statusCode == 200 && response.body.state == 1) {
+        var latest_dis = 0;
+        var first_dis = response.body.patientdata[0]?self.Timeparse2sec(response.body.patientdata[0].Disconnected_At):{};
+        var latest_state = {};
+        var first_state = {};
+        response.body.patientdata.forEach(function(item) {
+          if(self.Timeparse2sec(item.Disconnected_At) > latest_dis){
+            latest_dis = self.Timeparse2sec(item.Disconnected_At);
+            latest_state = item;
+          }
+          if(self.Timeparse2sec(item.Disconnected_At) <= first_dis){
+            first_dis = self.Timeparse2sec(item.Disconnected_At);
+            first_state = item;
+          }
+          item.duration = self.Timeparse2sec(item.Disconnected_At) - self.Timeparse2sec(item.Connection_Start);
+          //self.Timeparse2sec(item.Disconnected_At)
+        });
+        if(response.body.patientdata.length > 0){
+          self.Dsum(self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(latest_state.Connection_Start),
+            response.body.patientdata.length,
+            self.Timeparse2sec(latest_state.Connection_Start),
+            self.Timeparse2sec(latest_state.Disconnected_At),
+            latest_state.Device_ID,
+            ((self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(first_state.Disconnected_At))/60/60/24).toFixed(2)
+          );
+          self.setState({PatData: response.body.patientdata});
+        }
+      }
+      
+      
+    })
+    .catch(err => { 
+      console.log(err); 
+    });
 
     console.log("Scanning for Patient Data.");
 
-    var params = {
-        TableName : "521_Patient_Data",
-        ProjectionExpression: "#user, Connection_Start, Device_ID, Device_Name, Disconnected_At",
-        FilterExpression: "#user = :userid",
-        ExpressionAttributeNames:{
-            "#user": "User_ID"
-        },
-        ExpressionAttributeValues: {
-            ":userid": userinfo.User_ID,
-        }
-    };
-
-    var onScan = function(err, data) {
-      if (err) {
-          console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
-      } else {
-          console.log("Scan succeeded.");
-          var latest_dis = 0;
-          var first_dis = data.Items[0]?self.Timeparse2sec(data.Items[0].Disconnected_At):{};
-          var latest_state = {};
-          var first_state = {};
-          data.Items.forEach(function(item) {
-            if(self.Timeparse2sec(item.Disconnected_At) > latest_dis){
-              latest_dis = self.Timeparse2sec(item.Disconnected_At);
-              latest_state = item;
-            }
-            if(self.Timeparse2sec(item.Disconnected_At) <= first_dis){
-              first_dis = self.Timeparse2sec(item.Disconnected_At);
-              first_state = item;
-            }
-            item.duration = self.Timeparse2sec(item.Disconnected_At) - self.Timeparse2sec(item.Connection_Start);
-            //self.Timeparse2sec(item.Disconnected_At)
-          });
-          if(data.Items.length > 0){
-            self.Dsum(self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(latest_state.Connection_Start),
-              data.Items.length,
-              self.Timeparse2sec(latest_state.Connection_Start),
-              self.Timeparse2sec(latest_state.Disconnected_At),
-              latest_state.Device_ID,
-              ((self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(first_state.Disconnected_At))/60/60/24).toFixed(2)
-            );
-            self.setState({PatData: data.Items});
-          }
-
-          // continue scanning if we have more items
-          // scan can retrieve a maximum of 1MB of data
-          if (typeof data.LastEvaluatedKey != "undefined") {
-              console.log("Scanning for more...");
-              params.ExclusiveStartKey = data.LastEvaluatedKey;
-              docClient.scan(params, onScan);
-          }
-      }
-    };
-
-    docClient.scan(params, onScan);
+    
    
   }
   render() {
-
     var token = authToken.getToken();
     if(!token){
       return (<Redirect to="/login-modal" />);
