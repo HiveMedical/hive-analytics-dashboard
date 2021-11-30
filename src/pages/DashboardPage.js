@@ -109,9 +109,7 @@ class DashboardPage extends React.Component {
     var userinfo = authToken.getUserinfo();
     if(!userinfo) return;
 
-    // let userDataURL = "https://pv9z9cd9b0.execute-api.us-west-1.amazonaws.com/Prod/getdata"
     const userName = AuthForm.defaultProps.usernameInputProps.inputvalue
-    // += '?' + 'userName='+ userName.toString()
     fetch('https://cxlnioef6d.execute-api.us-west-1.amazonaws.com/521_getPatientData_stage/', {
       method : 'POST',
       headers: {
@@ -142,7 +140,6 @@ class DashboardPage extends React.Component {
             first_state = item;
           }
           item.duration = self.Timeparse2sec(item.Disconnected_At) - self.Timeparse2sec(item.Connection_Start);
-          //self.Timeparse2sec(item.Disconnected_At)
         });
         if(response.body.patientdata.length > 0){
           self.Dsum(self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(latest_state.Connection_Start),
