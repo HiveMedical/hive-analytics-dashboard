@@ -30,7 +30,6 @@ const Doctor_PatientSchedulePage = React.lazy(() => import('pages/Doctor_Patient
 const Doctor_DevicePage = React.lazy(() => import('pages/Doctor_DevicePage'));
 const SchedulePage = React.lazy(() => import('pages/SchedulePage'));
 const Doctor_ChartPage = React.lazy(() => import('pages/Doctor_ChartPage'));
-const ScheduleFormPage = React.lazy(() => import('pages/ScheduleFormPage'));
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -87,8 +86,6 @@ class App extends React.Component {
                 <Route exact path="/forms" component={FormPage} />
                 <Route exact path="/input-groups" component={InputGroupPage} />
                 <Route exact path="/charts" component={ChartPage} />
-                <Route exact path="/schedule-form" component={ScheduleFormPage} />
-                
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />

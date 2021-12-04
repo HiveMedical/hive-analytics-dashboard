@@ -22,3 +22,37 @@
 .badge:empty {
   display: inline-block;
 }
+
+.Cal__Day__root.Cal__Day__disabled{
+  position: relative;
+  color: rgb(255, 255, 255);
+
+  &::before{
+    background-color: rgb(252, 92, 125);
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 52px;
+    height: 52px;
+    margin-top: -26px;
+    margin-left: -26px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px;
+    z-index: -1;
+  }
+
+  & > span{
+    color: rgb(255, 255, 255) !important;
+  }
+}
+.Cal__Month__row:first-child li.Cal__Day__disabled{
+  background-color: transparent;
+}
+.Cal__Day__root.Cal__Day__today.Cal__Day__disabled{
+  font-weight: bold;
+}
+
+.marginbt{
+  margin-bottom: 30px;
+}

@@ -141,7 +141,7 @@ function ScheduleFormPage() {
           },
           body: JSON.stringify({
             User_ID : state.User_ID,
-            Start_Date : state.Start_Date,
+            Start_Date : (new Date(state.Start_Date).getTime()/1000)+"",
             Regimen_Week : rw,
             Duration : state.Duration,
             Prescription : state.Prescription

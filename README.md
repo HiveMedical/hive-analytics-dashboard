@@ -95,3 +95,18 @@ react-reduction -> AWS API Gateway -> Lambda -> DynamoDB
     if(!token){
         return (<Redirect to="/login-modal" />);
     }
+
+
+### Things needed to be taken care of before release
+
+1.  API authentication
+    
+    Make a token verification function for API requests, so that only signed-in users with a token will have correct response.
+
+2.  Password Hash in sign-up lambda
+
+    hash(pw, salt)
+
+3.  Doctor role verification for url access
+
+    Now a patient with a doctor-view url actually can access a doctor-view page. Should add a doctor role verification to the doctor-view pages. Adding that is similar to adding login verification.

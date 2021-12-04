@@ -1,3 +1,9 @@
+#doctorview.cr-sidebar {
+  &::after {
+    background: #abc0fb; /* fallback for old browsers */
+    background: linear-gradient(to bottom, #6a82fb, #abc0fb);
+  }
+}
 .cr-sidebar {
   // @include media-breakpoint-down(md) {
   //   display: none;

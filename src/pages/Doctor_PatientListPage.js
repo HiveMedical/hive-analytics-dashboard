@@ -42,12 +42,18 @@ import {
   ListGroup,
   ListGroupItem,
   Row,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ButtonGroup, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledButtonDropdown
 } from 'reactstrap';
 import { getColor } from 'utils/colors';
 import AuthForm from '../components/AuthForm';
 import _ from 'lodash';
 import authToken from 'utils/authToken';
 import { Redirect } from 'react-router';
+import { createBrowserHistory } from 'history';
 
 const today = new Date();
 const lastWeek = new Date(
@@ -56,35 +62,32 @@ const lastWeek = new Date(
   today.getDate() - 7,
 );
 
-
 var DuraSum='' ;
 var count = 0;
-class DashboardPage extends React.Component {
+class Doctor_PatientListPage extends React.Component {
 
   constructor(props) {
     var dur = '';
     super(props);
     this.state = {
-      PatData: [],
-      dur: '',
-      concount: 0,
-      Connection_Start: 0,
-      Disconnected_At: 0,
-      Device_ID: '',
-      TreatLen: 0
+      modal: false,
+      modal_backdrop: false,
+      modal_nested_parent: false,
+      modal_nested: false,
+      backdrop: true,
+      getpatientStatus: '',
+      getpatientResponse:{},
+      patient_list: [],
+      current_patient: {}
     };
 
   }
 
-  Dsum(duration,connection_count,Connection_Start,Disconnected_At,Device_ID,len){
-    this.setState({
-      dur: duration,
-      concount: connection_count,
-      Connection_Start: Connection_Start,
-      Disconnected_At: Disconnected_At,
-      Device_ID: Device_ID,
-      TreatLen: len
-    });
+  Timeparse2sec(datestr){
+    if(!datestr) return;
+    var time = datestr.split(' ')[0];
+    var hr_min_sec = time.split(':');
+    return parseInt(hr_min_sec[3]) + hr_min_sec[2]*60 + hr_min_sec[1]*60*60;
   }
 
   Dateformat(ts){
@@ -94,11 +97,58 @@ class DashboardPage extends React.Component {
     return formatted;
   }
 
-  Timeparse2sec(datestr){
-    if(!datestr) return;
-    var time = datestr.split(' ')[0];
-    var hr_min_sec = time.split(':');
-    return parseInt(hr_min_sec[3]) + hr_min_sec[2]*60 + hr_min_sec[1]*60*60;
+  toggle = (modalType, label, cp) => () => {
+    if (!modalType) {
+      return this.setState({
+        modal: !this.state.modal,
+      });
+    }
+
+    this.setState({
+      [`modal_${modalType}`]: !this.state[`modal_${modalType}`],
+    });
+
+    if(label === 0 || label === 1){
+      this.setLabel(label);
+    }
+
+    if(cp){
+      this.setState({
+        current_patient: cp
+      });
+    }
+  }
+
+  setLabel(label){
+    console.log('set label', label);
+    fetch('https://9inazs7xog.execute-api.us-west-1.amazonaws.com/521_SetLabel_Stage', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          User_ID: this.state.current_patient.User_ID,
+          Label: label,
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      if(response.body.state == 1){
+        console.log('set label success');
+      }
+      else{
+      }
+    })
+    .catch(err => { console.log(err); 
+    });
+  }
+
+  goredirect(path, patient_id){
+    console.log(path);
+    const history = createBrowserHistory();
+    history.push("/" + path + "/" + patient_id);
+    window.location.reload(false);
   }
 
   componentDidMount() {
@@ -109,9 +159,8 @@ class DashboardPage extends React.Component {
     var userinfo = authToken.getUserinfo();
     if(!userinfo) return;
 
-    // const userName = AuthForm.defaultProps.usernameInputProps.inputvalue
-    fetch('https://cxlnioef6d.execute-api.us-west-1.amazonaws.com/521_getPatientData_stage/', {
-      method : 'POST',
+    fetch('https://wmqijpg48g.execute-api.us-west-1.amazonaws.com/521_GetPatient_Stage', {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -121,128 +170,49 @@ class DashboardPage extends React.Component {
       })
     })
     .then(response => response.json())
-    
     .then(response => {
-      console.log(response)
-
-      if (response.statusCode == 200 && response.body.state == 1) {
-        var latest_dis = 0;
-        var first_dis = response.body.patientdata[0]?self.Timeparse2sec(response.body.patientdata[0].Disconnected_At):{};
-        var latest_state = {};
-        var first_state = {};
-        response.body.patientdata.forEach(function(item) {
-          if(self.Timeparse2sec(item.Disconnected_At) > latest_dis){
-            latest_dis = self.Timeparse2sec(item.Disconnected_At);
-            latest_state = item;
-          }
-          if(self.Timeparse2sec(item.Disconnected_At) <= first_dis){
-            first_dis = self.Timeparse2sec(item.Disconnected_At);
-            first_state = item;
-          }
-          item.duration = self.Timeparse2sec(item.Disconnected_At) - self.Timeparse2sec(item.Connection_Start);
+      this.setState({
+        getpatientResponse: response
+      })
+      this.state.getpatientStatus = this.state.getpatientResponse.statusCode;
+     
+      if(this.state.getpatientStatus==200 && this.state.getpatientResponse.body.state == 1){
+        this.setState({
+          patient_list: this.state.getpatientResponse.body.patientinfo
         });
-        if(response.body.patientdata.length > 0){
-          self.Dsum(self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(latest_state.Connection_Start),
-            response.body.patientdata.length,
-            self.Timeparse2sec(latest_state.Connection_Start),
-            self.Timeparse2sec(latest_state.Disconnected_At),
-            latest_state.Device_ID,
-            ((self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(first_state.Disconnected_At))/60/60/24).toFixed(2)
-          );
-          self.setState({PatData: response.body.patientdata});
-        }
+        console.log('patient_list', this.state.patient_list);
+        authToken.storePatientlist(this.state.patient_list);
+        authToken.storePatientlist_key(this.state.patient_list);
       }
-      
-      
+      else{
+      }
     })
-    .catch(err => { 
-      console.log(err); 
+    .catch(err => { console.log(err); 
     });
-
-    console.log("Scanning for Patient Data.");
-
-    
    
   }
   render() {
+
     var token = authToken.getToken();
+    var userinfo = authToken.getUserinfo();
     if(!token){
       return (<Redirect to="/login-modal" />);
+    }
+    if(userinfo.Role == 0){
+      return (<Redirect to="/dashboard" />);
     }
 
     const primaryColor = getColor('primary');
     const secondaryColor = getColor('secondary'); 
-    console.log("Dur", this.state.dur);
-    const pd = this.state.PatData;
-    let pd_sorted = _.orderBy(pd, ['Disconnected_At'],'desc');
-    console.log("Authform:",AuthForm.defaultProps)
-    console.log('pd_sorted',pd_sorted)
     
     return (
 
       
       <Page
         className="DashboardPage"
-        title="Last Connection"
+        title="My Patients"
         // breadcrumbs={[{ name: 'Dashboard', active: false }]}
       >
-        <Row>
-
-        
-          <Col lg={3} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Total Duration Connected (sec)"
-              subtitle={"Disconnected at "+this.state.Disconnected_At}
-              //number={Math.trunc(this.state.dur/60)}
-              number={this.state.dur?this.state.dur:0}
-              color="primary"
-              progress=
-              {{
-                value: this.state.dur?(this.state.dur/0.12).toFixed(2):0,
-                // label: 'Last month',
-              }}
-            />
-          </Col>
-
-          <Col lg={3} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Number of Medication Sessions"
-              subtitle="Total: 30"
-              number={this.state.concount}
-              color="secondary"
-              progress={{
-                value: (this.state.concount/0.3).toFixed(2),
-                // label: 'Last month',
-              }}
-            />
-          </Col>
-
-          <Col lg={3} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Estimated Drug Intake"
-              subtitle="Total: 500 ml"
-              number={this.state.dur?this.state.dur*20:0+" ml"}
-              color="info"
-              progress={{
-                value: this.state.dur?(this.state.dur*20/5).toFixed(2):0,
-                // label: 'Last month',
-              }}
-            />
-          </Col>
-
-          <Col lg={3} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Treatment Length"
-              subtitle="Total: 60 days"
-              number={this.state.TreatLen?this.state.TreatLen:0+" Days"}
-              color="warning"
-              progress={{
-                value: this.state.TreatLen?(this.state.TreatLen/0.6).toFixed(2):0,
-                // label: 'Last month',
-              }}
-            />
-          </Col>
-        </Row>
 {/* 
         <Row>
           <Col lg="8" md="12" sm="12" xs="12">
@@ -526,30 +496,72 @@ class DashboardPage extends React.Component {
           </Col> */}
         <Row>
         <Col lg={12} md={12} sm={12} xs={12}>
-          <h3>Sessions</h3>
           <table className="table table-hover">
               <thead>
                   <tr>
-                      <th>Device</th>
-                      <th>Connection Start</th>
-                      <th>Connection Stop</th>
-                      <th>Duration (s)</th>
-                      <th>Status</th>
+                      <th>User ID</th>
+                      <th>Name</th>
+                      <th>Birthday</th>
+                      <th>Email</th>
+                      <th>Signup Time</th>
+                      <th>Action</th>
                   </tr>
               </thead>
               <tbody>
                   {
-                  Array.isArray(pd_sorted) && pd_sorted.map(friend => {
+                  Array.isArray(this.state.patient_list) && this.state.patient_list.map(friend => {
                       return <tr key={friend.ts}>
-                          <td>{friend.Device_Name?friend.Device_Name:friend.Device_ID}</td>
-                          <td>{friend.Connection_Start}</td>
-                          <td>{friend.Disconnected_At}</td>
-                          <td>{friend.duration}</td>
-                          <td className={((this.Timeparse2sec(friend.Disconnected_At) - this.Timeparse2sec(friend.Connection_Start))*20/5)>550?"text-secondary":""}>{((this.Timeparse2sec(friend.Disconnected_At) - this.Timeparse2sec(friend.Connection_Start))*20/5)>550?"Overdose":"Normal"}</td>
+                          <td>{friend.User_ID}</td>
+                          <td>{friend.User_Name}</td>
+                          <td>{friend.Birth_Year + '-' + friend.Birth_Mon + '-' + friend.Birth_Day}</td>
+                          <td>{friend.Email}</td>
+                          <td>{this.Dateformat(friend.Signup_Time)}</td>
+                          <td>
+                            <ButtonGroup>
+                              <UncontrolledButtonDropdown>
+                                <DropdownToggle color="primary" caret>Action</DropdownToggle>
+                                <DropdownMenu>
+                                  <DropdownItem onClick={this.toggle('backdrop', null, friend)}>Label</DropdownItem>
+                                  <DropdownItem onClick={() => this.goredirect('doctor-patientdashboard', friend.User_ID)}>Dashboard</DropdownItem>
+                                  <DropdownItem onClick={() => this.goredirect('doctor-devicelist', friend.User_ID)}>Device</DropdownItem>
+                                  <DropdownItem>Edit</DropdownItem>
+                                </DropdownMenu>
+                              </UncontrolledButtonDropdown>
+                            </ButtonGroup>
+                          </td>
                       </tr>
                   })}
               </tbody>
             </table>
+            <Modal
+              isOpen={this.state.modal_backdrop}
+              toggle={this.toggle('backdrop')}
+              backdrop={this.state.backdrop}>
+              <ModalHeader toggle={this.toggle('backdrop')}>
+                Label Patient - <i>{this.state.current_patient.User_Name}</i>
+              </ModalHeader>
+              <ModalBody>
+                <p className="text-primary"><MdBubbleChart size={25} color={primaryColor} /> Is this patient doing good with self-treatments?</p>
+                <p>This is for future training on the automatic classification of "is a patient suitable for self-treatment?", which will affect the recommendation of OPAT for potential patients.</p>
+                <p className="text-muted">The patient will not see the label.</p>
+                <p>Current Label: {' '}
+                  <Badge color={this.state.current_patient.Label==1?'success':'secondary'}>
+                    {this.state.current_patient.Label==1?'Yes':'No'}
+                  </Badge>
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="success" onClick={this.toggle('backdrop', 1)}>
+                  Yes
+                </Button>{' '}
+                <Button color="secondary" onClick={this.toggle('backdrop', 0)}>
+                  No
+                </Button>{' '}
+                <Button color="link" onClick={this.toggle('backdrop')}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Modal>
           </Col>
         </Row>
       </Page>
@@ -560,4 +572,4 @@ class DashboardPage extends React.Component {
 
 
 
-export default DashboardPage;
+export default Doctor_PatientListPage;
