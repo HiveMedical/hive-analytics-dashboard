@@ -158,6 +158,13 @@ class DashboardPage extends React.Component {
             first_state = item;
           }
           item.duration = self.Timeparse2sec(item.Disconnected_At) - self.Timeparse2sec(item.Connection_Start);
+          if(((self.Timeparse2sec(item.Disconnected_At) - self.Timeparse2sec(item.Connection_Start))*20/5)>60*60){
+            item.status = 'Overdose';
+          }else if(((self.Timeparse2sec(item.Disconnected_At) - self.Timeparse2sec(item.Connection_Start))*20/5)<30*60){
+            item.status = 'Duration too short';
+          }else{
+            item.status = 'Normal';
+          }
         });
         if(response.body.patientdata.length > 0){
           self.Dsum(self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(latest_state.Connection_Start),
@@ -308,7 +315,7 @@ class DashboardPage extends React.Component {
                           <td>{friend.Connection_Start}</td>
                           <td>{friend.Disconnected_At}</td>
                           <td>{friend.duration}</td>
-                          <td className={((this.Timeparse2sec(friend.Disconnected_At) - this.Timeparse2sec(friend.Connection_Start))*20/5)>550?"text-secondary":""}>{((this.Timeparse2sec(friend.Disconnected_At) - this.Timeparse2sec(friend.Connection_Start))*20/5)>550?"Overdose":"Normal"}</td>
+                          <td className={friend.status == 'Normal'?"":"text-secondary"}>{friend.status}</td>
                       </tr>
                   })}
               </tbody>
