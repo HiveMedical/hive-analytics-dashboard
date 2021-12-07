@@ -170,7 +170,7 @@ class SchedulePage extends React.Component {
           <Col lg={8} md={12} sm={12} xs={12}>
             {
             Array.isArray(this.state.schedule) && this.state.schedule.map((bigfriend, bidx) => {
-              return <div>
+              return <div className="marginbt">
                 <h3>T{bidx+1} - Regimen (week)</h3>
                   <table className="table table-hover">
                   <thead>
