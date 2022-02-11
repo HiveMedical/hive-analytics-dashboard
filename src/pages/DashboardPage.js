@@ -183,7 +183,7 @@ class DashboardPage extends React.Component {
       
       <Page
         className="DashboardPage"
-        title="Last Connection"
+        title="Patient Adherence"
         // breadcrumbs={[{ name: 'Dashboard', active: false }]}
       >
         <Row>
