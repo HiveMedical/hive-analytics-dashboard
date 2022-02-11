@@ -237,7 +237,7 @@ class DashboardPage extends React.Component {
 
         <Row>
           <Col md={12}>
-          <h3>Last Connection</h3>
+          <h3>Patient Adherence</h3>
           </Col>
           <Col lg={3} md={6} sm={6} xs={12}>
             <NumberWidget
