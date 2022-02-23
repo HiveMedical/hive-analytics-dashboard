@@ -77,7 +77,9 @@ class Doctor_PatientListPage extends React.Component {
       backdrop: true,
       getpatientStatus: '',
       getpatientResponse:{},
+      getpatientmetricsresponse: {},
       patient_list: [],
+      patient_metric_list: [],
       current_patient: {}
     };
 
@@ -189,6 +191,39 @@ class Doctor_PatientListPage extends React.Component {
     })
     .catch(err => { console.log(err); 
     });
+
+    fetch('https://wmqijpg48g.execute-api.us-west-1.amazonaws.com/521_GetPatient_Stage', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          User_ID: userinfo.User_ID,
+          Metrics_Data: true
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      this.setState({
+        getpatientmetricsresponse: response
+      })
+      this.state.getpatientStatus = this.state.getpatientResponse.statusCode;
+     
+      if(this.state.getpatientStatus==200 && this.state.getpatientResponse.body.state == 1){
+        this.setState({
+          patient_metric_list: this.state.getpatientmetricsresponse.body.patientinfo
+        });
+        console.log('patient_metric_list', this.state.patient_metric_list);
+        // authToken.storePatientlist(this.state.patient_list);
+        // authToken.storePatientlist_key(this.state.patient_list);
+      }
+      else{
+      }
+    })
+    .catch(err => { console.log(err); 
+    });
+   
    
   }
   render() {
@@ -501,21 +536,21 @@ class Doctor_PatientListPage extends React.Component {
                   <tr>
                       <th>User ID</th>
                       <th>Name</th>
-                      <th>Birthday</th>
-                      <th>Email</th>
-                      <th>Signup Time</th>
+                      <th>Prescribed Drug</th>
+                      <th>Total Duration</th>
+                      <th>Valid Session / Total Session</th>
                       <th>Action</th>
                   </tr>
               </thead>
               <tbody>
                   {
-                  Array.isArray(this.state.patient_list) && this.state.patient_list.map(friend => {
+                  Array.isArray(this.state.patient_metric_list) && this.state.patient_metric_list.map(friend => {
                       return <tr key={friend.ts}>
                           <td>{friend.User_ID}</td>
                           <td>{friend.User_Name}</td>
-                          <td>{friend.Birth_Year + '-' + friend.Birth_Mon + '-' + friend.Birth_Day}</td>
-                          <td>{friend.Email}</td>
-                          <td>{this.Dateformat(friend.Signup_Time)}</td>
+                          <td>{friend.Prescription_Drug}</td>
+                          <td>{friend.Total_Duration_Connected}</td>
+                          <td>{friend.Number_Of_Valid_Session+'/'+friend.Number_Of_Total_Session}</td>
                           <td>
                             <ButtonGroup>
                               <UncontrolledButtonDropdown>
@@ -568,8 +603,6 @@ class Doctor_PatientListPage extends React.Component {
     );
   }
 }
-
-
 
 
 export default Doctor_PatientListPage;
