@@ -113,6 +113,7 @@ class PatientSchedulePage extends React.Component {
       },
       body: JSON.stringify({
           User_ID: pid,
+          All_Data: false
       })
     })
     .then(response => response.json())

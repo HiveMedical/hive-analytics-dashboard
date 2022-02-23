@@ -76,7 +76,9 @@ class DashboardPage extends React.Component {
       TreatLen: 0,
       patient_list: authToken.getPatientlist(),
       patient_list_key: authToken.getPatientlist_key(),
-      pid: 0
+      pid: 0,
+      getPatientMetricsResponse: {},
+      patient_data_metrics_list: []
     };
 
   }
@@ -99,11 +101,58 @@ class DashboardPage extends React.Component {
     return formatted;
   }
 
+  Timeformat(totalSeconds){
+    var hours = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+    var minutes = Math.floor(totalSeconds / 60);
+    var seconds = totalSeconds % 60;
+    
+    var result = seconds + " s";
+    if(minutes > 0){
+      result = minutes + " mins " + result;
+    }
+    if(hours > 0) {
+      result = hours + " hour " + result;
+    }
+    return result;
+  }
+
+  DurationStatus(connectionDuration, PrescribedDuration){
+
+    if(!PrescribedDuration)
+      PrescribedDuration = 0;
+    var marginTime = 10 // 10 seconds
+    var minPrescribedDuration = parseInt(PrescribedDuration) - marginTime;
+    var maxPrescribedDuration = parseInt(PrescribedDuration) + marginTime;
+    var durationStatus;
+    console.log("minPrescribedDur",minPrescribedDuration);
+    console.log("maxPrescribedDur",maxPrescribedDuration);
+    console.log("connectionDur",connectionDuration,PrescribedDuration);
+    if(connectionDuration >= minPrescribedDuration  && connectionDuration <= maxPrescribedDuration){
+      durationStatus = "Correct Duration"
+    }else if(connectionDuration < minPrescribedDuration){
+      durationStatus = "Duration Too Short"
+    }else{
+      durationStatus = "Duration Too Long"
+    }
+
+    return durationStatus;
+  }
+
   Timeparse2sec(datestr){
     if(!datestr) return;
     var time = datestr.split(' ')[0];
     var hr_min_sec = time.split(':');
     return parseInt(hr_min_sec[3]) + hr_min_sec[2]*60 + hr_min_sec[1]*60*60;
+  }
+
+  CalculateTotalDuration(){
+    this.totalDuration = this.state
+    for(var i=0; i< this.state.PatData.length; i++){
+      this.totalDuration = this.totalDuration + this.state.PatData.duration;
+    }
+    console.log("Total Duration: ", this.totalDuration);
+    return this.totalDuration;
   }
 
   goredirect(path, patient_id){
@@ -136,6 +185,7 @@ class DashboardPage extends React.Component {
       },
       body: JSON.stringify({
           User_ID: pid,
+          All_Data: false,
       })
     })
     .then(response => response.json())
@@ -186,6 +236,39 @@ class DashboardPage extends React.Component {
 
     console.log("Scanning for Patient Data.");
 
+    fetch(' https://fyab3djam7.execute-api.us-west-1.amazonaws.com/521_GetPatientDataMetrics_Stage', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          User_ID: pid,
+          All_Data: false
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      this.setState({
+        getPatientMetricsResponse: response
+      })
+      this.state.getpatientStatus = this.state.getPatientMetricsResponse.statusCode;
+      console.log("pateintStatus",this.state.getpatientStatus )
+     
+      if(this.state.getpatientStatus==200 && this.state.getPatientMetricsResponse.body.state == 1){
+        this.setState({
+          patient_data_metrics_list: this.state.getPatientMetricsResponse.body.patientdatametrics
+        });
+        console.log('patient_metric_list', this.state.patient_data_metrics_list);
+        // authToken.storePatientlist(this.state.patient_list);
+        // authToken.storePatientlist_key(this.state.patient_list);
+      }
+      else{
+      }
+    })
+    .catch(err => { console.log(err); 
+    });
+
     
    
   }
@@ -196,6 +279,10 @@ class DashboardPage extends React.Component {
       return (<Redirect to="/login-modal" />);
     }
 
+    var userinfo = authToken.getUserinfo();
+
+    // var totalDuration = this.CalculateTotalDuration();
+
     const primaryColor = getColor('primary');
     const secondaryColor = getColor('secondary'); 
     console.log("Dur", this.state.dur);
@@ -203,6 +290,15 @@ class DashboardPage extends React.Component {
     let pd_sorted = _.orderBy(pd, ['Disconnected_At'],'desc');
     console.log("Authform:",AuthForm.defaultProps)
     console.log('pd_sorted',pd_sorted)
+
+    // Get the patient metric data list
+    const patient_data_metric = this.state.patient_data_metrics_list;
+    console.log("patient_data_metric: ", patient_data_metric);
+
+    // Calculate Total Duration Connected
+    var totalDuration = _.sumBy(patient_data_metric,'Connection_Duration_Sec');
+    var numOfSessions = patient_data_metric.length;
+
     
     return (
 
@@ -241,46 +337,45 @@ class DashboardPage extends React.Component {
           </Col>
           <Col lg={3} md={6} sm={6} xs={12}>
             <NumberWidget
-              title="Total Duration Connected (sec)"
-              subtitle={"Disconnected at "+this.state.Disconnected_At}
+              title="Total Duration (hours)"
               //number={Math.trunc(this.state.dur/60)}
-              number={this.state.dur?this.state.dur:0}
+              number={(totalDuration/3600).toFixed(1)}
               color="primary"
               progress=
               {{
-                value: this.state.dur?(this.state.dur/0.12).toFixed(2):0,
+                value: 20,
                 // label: 'Last month',
               }}
             />
           </Col>
 
-          <Col lg={3} md={6} sm={6} xs={12}>
+          <Col lg={4} md={6} sm={6} xs={12}>
             <NumberWidget
               title="Number of Medication Sessions"
-              subtitle="Total: 30"
-              number={this.state.concount}
+              number={numOfSessions}
               color="secondary"
               progress={{
-                value: (this.state.concount/0.3).toFixed(2),
+                value: 20
                 // label: 'Last month',
               }}
             />
           </Col>
 
-          <Col lg={3} md={6} sm={6} xs={12}>
+          <Col lg={4} md={6} sm={6} xs={12}>
             <NumberWidget
               title="Estimated Drug Intake"
               subtitle="Total: 500 ml"
-              number={this.state.dur?this.state.dur*20:0+" ml"}
+              number={(totalDuration/60 * 20/6).toFixed(0) + " ml"}
+              subtitle="Assuming Flowrate = 200 mL/hr"
               color="info"
               progress={{
-                value: this.state.dur?(this.state.dur*20/5).toFixed(2):0,
+                value: 30,
                 // label: 'Last month',
               }}
             />
           </Col>
 
-          <Col lg={3} md={6} sm={6} xs={12}>
+          {/* <Col lg={3} md={6} sm={6} xs={12}>
             <NumberWidget
               title="Treatment Length"
               subtitle="Total: 60 days"
@@ -291,7 +386,7 @@ class DashboardPage extends React.Component {
                 // label: 'Last month',
               }}
             />
-          </Col>
+          </Col> */}
         </Row>
 
         <Row>
@@ -309,13 +404,14 @@ class DashboardPage extends React.Component {
               </thead>
               <tbody>
                   {
-                  Array.isArray(pd_sorted) && pd_sorted.map(friend => {
+                  Array.isArray(patient_data_metric) && patient_data_metric.map(friend => {
                       return <tr key={friend.ts}>
                           <td>{friend.Device_Name?friend.Device_Name:friend.Device_ID}</td>
                           <td>{friend.Connection_Start}</td>
                           <td>{friend.Disconnected_At}</td>
-                          <td>{friend.duration}</td>
-                          <td className={friend.status == 'Normal'?"":"text-secondary"}>{friend.status}</td>
+                          <td>{this.Timeformat(friend.Connection_Duration_Sec)}</td>
+                          <td className={friend.Incorrect_Duration?"text-secondary":""}>
+                          {this.DurationStatus(friend.Connection_Duration_Sec,friend.PrescribedDuration)}</td>
                       </tr>
                   })}
               </tbody>
