@@ -269,6 +269,8 @@ class Doctor_PatientListPage extends React.Component {
 
     const primaryColor = getColor('primary');
     const secondaryColor = getColor('secondary'); 
+
+    this.state.patient_metric_list = _.orderBy(this.state.patient_metric_list, ['User_ID'],'aesc');
     
     return (
 
