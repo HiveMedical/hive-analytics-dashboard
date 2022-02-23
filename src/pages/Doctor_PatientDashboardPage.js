@@ -292,11 +292,13 @@ class DashboardPage extends React.Component {
     console.log('pd_sorted',pd_sorted)
 
     // Get the patient metric data list
-    const patient_data_metric = this.state.patient_data_metrics_list;
+    var patient_data_metric = this.state.patient_data_metrics_list;
+    patient_data_metric = _.orderBy(patient_data_metric, ['Connection_Start'],'desc');
     console.log("patient_data_metric: ", patient_data_metric);
 
     // Calculate Total Duration Connected
     var totalDuration = _.sumBy(patient_data_metric,'Connection_Duration_Sec');
+    
     var numOfSessions = patient_data_metric.length;
 
     
