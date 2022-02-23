@@ -119,18 +119,18 @@ class DashboardPage extends React.Component {
 
   DurationStatus(connectionDuration, PrescribedDuration){
 
-    if(!PrescribedDuration)
-      PrescribedDuration = 0;
-    var marginTime = 10 // 10 seconds
-    var minPrescribedDuration = parseInt(PrescribedDuration) - marginTime;
-    var maxPrescribedDuration = parseInt(PrescribedDuration) + marginTime;
+    // if(!PrescribedDuration)
+    //   PrescribedDuration = 0;
+    // var marginTime = 10 // 10 seconds
+    // var minPrescribedDuration = parseInt(PrescribedDuration) - marginTime;
+    // var maxPrescribedDuration = parseInt(PrescribedDuration) + marginTime;
     var durationStatus;
-    console.log("minPrescribedDur",minPrescribedDuration);
-    console.log("maxPrescribedDur",maxPrescribedDuration);
+    // console.log("minPrescribedDur",minPrescribedDuration);
+    // console.log("maxPrescribedDur",maxPrescribedDuration);
     console.log("connectionDur",connectionDuration,PrescribedDuration);
-    if(connectionDuration >= minPrescribedDuration  && connectionDuration <= maxPrescribedDuration){
+    if(connectionDuration == PrescribedDuration){
       durationStatus = "Correct Duration"
-    }else if(connectionDuration < minPrescribedDuration){
+    }else if(connectionDuration < PrescribedDuration){
       durationStatus = "Duration Too Short"
     }else{
       durationStatus = "Duration Too Long"
@@ -411,7 +411,7 @@ class DashboardPage extends React.Component {
                           <td>{friend.Disconnected_At}</td>
                           <td>{this.Timeformat(friend.Connection_Duration_Sec)}</td>
                           <td className={friend.Incorrect_Duration?"text-secondary":""}>
-                          {this.DurationStatus(friend.Connection_Duration_Sec,friend.PrescribedDuration)}</td>
+                          {this.DurationStatus(friend.Connection_Duration_Sec,friend.Prescription_Duration)}</td>
                       </tr>
                   })}
               </tbody>
