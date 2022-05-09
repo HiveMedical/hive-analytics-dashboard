@@ -310,7 +310,7 @@ class DashboardPage extends React.Component {
         // breadcrumbs={[{ name: 'Dashboard', active: false }]}
       >
         
-        <Row>
+        <Row className="no-print">
           <Col md={12}>
             <Card>
               <CardHeader>Actions</CardHeader>
@@ -322,7 +322,7 @@ class DashboardPage extends React.Component {
                   <DropdownMenu>
                     {
                     Array.isArray(this.state.patient_list) && this.state.patient_list.map(friend => {
-                      return <DropdownItem disabled={this.state.pid == friend.User_ID?true:false} onClick={() => this.goredirect('doctor-patientdashboard', friend.User_ID)}>{friend.User_Name}</DropdownItem>
+                      return <DropdownItem key={friend.User_ID} disabled={this.state.pid == friend.User_ID?true:false} onClick={() => this.goredirect('doctor-patientdashboard', friend.User_ID)}>{friend.User_Name}</DropdownItem>
                     })}
                     <DropdownItem divider />
                     <DropdownItem>Close</DropdownItem>
@@ -366,7 +366,7 @@ class DashboardPage extends React.Component {
           <Col lg={4} md={6} sm={6} xs={12}>
             <NumberWidget
               title="Estimated Drug Intake"
-              subtitle="Total: 500 ml"
+              // subtitle="Total: 500 ml"
               number={(totalDuration/60 * 20/6).toFixed(0) + " ml"}
               subtitle="Assuming Flowrate = 200 mL/hr"
               color="info"
@@ -407,7 +407,7 @@ class DashboardPage extends React.Component {
               <tbody>
                   {
                   Array.isArray(patient_data_metric) && patient_data_metric.map(friend => {
-                      return <tr key={friend.ts}>
+                      return <tr key={friend.Connection_ID}>
                           <td>{friend.Device_Name?friend.Device_Name:friend.Device_ID}</td>
                           <td>{friend.Connection_Start}</td>
                           <td>{friend.Disconnected_At}</td>

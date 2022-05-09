@@ -291,7 +291,7 @@ class Doctor_PatientListPage extends React.Component {
                       <th>Total Duration</th>
                       <th>Valid / Total Session</th>
                       <th>Session History</th>
-                      <th>Action</th>
+                      <th className="no-print">Action</th>
                   </tr>
               </thead>
               <tbody>
@@ -314,7 +314,7 @@ class Doctor_PatientListPage extends React.Component {
                                 })}
                               </Card>
                           </td>
-                          <td>
+                          <td className="no-print">
                             <ButtonGroup>
                               <UncontrolledButtonDropdown>
                                 <DropdownToggle color="primary" caret>Action</DropdownToggle>

@@ -40,3 +40,15 @@ button,
   margin: 0;
   overflow-x: hidden;
 }
+
+.only-print {
+  display: none;
+}
+@media print {
+  .no-print, .no-print * {
+    display: none !important;
+  }
+  .only-print {
+    display: flex !important;
+  }
+}

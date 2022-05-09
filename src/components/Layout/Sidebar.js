@@ -153,7 +153,7 @@ class Sidebar extends React.Component {
         <div className={bem.e('background')} style={sidebarBackground} />
         <div className={bem.e('content')}>
           <Navbar>
-            <SourceLink className="navbar-brand d-flex">
+            <SourceLink className="navbar-brand d-flex text-white">
               <img
                 src={logo200Image}
                 width="40"
@@ -161,9 +161,7 @@ class Sidebar extends React.Component {
                 className="pr-2"
                 alt=""
               />
-              <a href="http://www.hivestlouis.org/" className="text-white">
-                {stitle}
-              </a>
+              {stitle}
             </SourceLink>
           </Navbar>
           <Nav vertical>

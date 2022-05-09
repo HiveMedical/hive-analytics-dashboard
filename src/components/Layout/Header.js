@@ -1,3 +1,4 @@
+import logo200Image from 'assets/img/logo/hive-logo.png';
 import Avatar from 'components/Avatar';
 import { UserCard } from 'components/Card';
 import Notifications from 'components/Notifications';
@@ -30,7 +31,6 @@ import {
 } from 'reactstrap';
 import bn from 'utils/bemnames';
 import PropTypes from 'prop-types';
-import { BrowserRouter, Route } from 'react-router-dom';
 import authToken from 'utils/authToken';
 
 const bem = bn.create('header');
@@ -94,22 +94,38 @@ class Header extends React.Component {
     const { isNotificationConfirmed } = this.state;
     this.token = authToken.getToken();
     this.userinfo = authToken.getUserinfo();
+    var stitle = 'HIVE';
+    if (this.userinfo && this.userinfo.Role === 1){
+      stitle = 'HIVE - Doctor';
+    }
 
     return (
       <Navbar light expand className={bem.b('bg-white')}>
-        <Nav navbar className="mr-2">
+        <Nav navbar className="mr-2 only-print">
+          <div className="d-flex align-items-center">
+            <img
+              src={logo200Image}
+              width="40"
+              height="30"
+              className="pr-2"
+              alt=""
+            />
+            {stitle}
+          </div>
+        </Nav>
+        <Nav navbar className="mr-2 no-print">
           <Button outline onClick={this.handleSidebarControlButton}>
             <MdClearAll size={25} />
           </Button>
         </Nav>
-        <Nav navbar>
+        <Nav navbar className="no-print">
         {!!this.token &&
           <SearchInput />
         }
         </Nav>
 
       {!!this.token &&
-        <Nav navbar className={bem.e('nav-right')}>
+        <Nav navbar className={`${bem.e('nav-right')} no-print`}>
           <NavItem className="d-inline-flex">
             <NavLink id="Popover1" className="position-relative">
               {isNotificationConfirmed ? (

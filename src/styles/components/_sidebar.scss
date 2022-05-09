@@ -104,6 +104,9 @@
     + .cr-content {
       margin: 0 0 0 $cr-sidebar-width;
       transition: margin 0.2s ease-in;
+      @media print {
+        margin: 0;
+      }
     }
   }
 
@@ -127,6 +130,9 @@
         background: rgba(theme-color(light), 0.15);
       }
     }
+  }
+  @media print {
+    display: none;
   }
 }
 
