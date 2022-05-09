@@ -47,7 +47,7 @@ class AuthModalPage extends React.Component {
 
     return (
       <Page
-        title="Sign In"
+        title="Sign-In"
         breadcrumbs={[{ name: 'login', active: true }]}>
         <Row>
           <Col md="12" sm="12" xs="12">
