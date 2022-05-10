@@ -1,6 +1,6 @@
 // page
 .cr-page {
-  min-height: 100vh;
+  min-height: calc(100vh - 73px);
   &__header {
     @include media-breakpoint-down(sm) {
       flex-direction: column;
@@ -16,6 +16,7 @@
       margin-bottom: 0;
     }
     padding-right: 0.5rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
   }
 
