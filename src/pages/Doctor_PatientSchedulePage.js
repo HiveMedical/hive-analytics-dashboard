@@ -84,7 +84,7 @@ class PatientSchedulePage extends React.Component {
     if (!userinfo) return;
 
     const pid =
-      this.props.match.params.pid !== -1
+      this.props.match.params.pid !== '-1'
         ? this.props.match.params.pid
         : this.state.patient_list[0]['User_ID'];
     console.log('pid:', pid);
@@ -231,7 +231,7 @@ class PatientSchedulePage extends React.Component {
                           <th>Weekday</th>
                           <th>Time</th>
                           <th>Drug Prescribed</th>
-                          <th>Doctor</th>
+                          <th>Provider</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -242,7 +242,7 @@ class PatientSchedulePage extends React.Component {
                                 <td>{this.state.week_arr[idx]}</td>
                                 <td>{friend[0] + ' - ' + friend[1]}</td>
                                 <td>{bigfriend.Prescription}</td>
-                                <td>Doctor 1</td>
+                                <td>Provider 1</td>
                               </tr>
                             );
                           })}

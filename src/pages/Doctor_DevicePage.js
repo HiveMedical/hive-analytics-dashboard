@@ -47,7 +47,7 @@ class CardPage extends React.Component {
     }
 
     const pid =
-      this.props.match.params.pid !== -1
+      this.props.match.params.pid !== '-1'
         ? this.props.match.params.pid
         : this.state.patient_list[0]['User_ID'];
     console.log('pid:', pid);

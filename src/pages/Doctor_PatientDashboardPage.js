@@ -153,13 +153,11 @@ class DashboardPage extends React.Component {
     if (!userinfo) return;
 
     const pid =
-      this.props.match.params.pid !== -1
+      this.props.match.params.pid !== '-1'
         ? this.props.match.params.pid
         : this.state.patient_list[0]['User_ID'];
-    console.log('pid:', pid);
-    this.setState({
-      pid: pid,
-    });
+    console.log('pid:', typeof pid);
+    this.setState({ pid });
     console.log('this patient_list_key', this.state.patient_list_key);
 
     fetch(

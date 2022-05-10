@@ -5,7 +5,6 @@ import {
   Badge,
   Button,
   Card,
-  CardImg,
   Col,
   Row,
   Modal,
@@ -22,9 +21,9 @@ import { getColor } from 'utils/colors';
 import _ from 'lodash';
 import authToken from 'utils/authToken';
 import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import xImage from 'assets/img/table/xMark1.png';
-import checkImage from 'assets/img/table/checkMark1.png';
+import { previousDate, getSessionStatus } from '../utils/demos';
 
 class Doctor_PatientListPage extends React.Component {
   constructor(props) {
@@ -276,33 +275,42 @@ class Doctor_PatientListPage extends React.Component {
                 {Array.isArray(patient_metric_list) &&
                   patient_metric_list.map(friend => {
                     return (
-                      <tr className="text-center" key={friend.User_ID}>
-                        <td>{friend.User_ID}</td>
-                        <td>{friend.User_Name}</td>
-                        <td>{friend.Prescription_Drug}</td>
-                        <td>
+                      <tr
+                        className="text-center align-middle"
+                        key={friend.User_ID}
+                      >
+                        <td className="align-middle">{friend.User_ID}</td>
+                        <td className="align-middle">
+                          <Link
+                            to={`/doctor-patientdashboard/${friend.User_ID}`}
+                          >
+                            {friend.User_Name}
+                          </Link>
+                        </td>
+                        <td className="align-middle">
+                          {friend.Prescription_Drug}
+                        </td>
+                        <td className="align-middle">
                           {friend.Number_Of_Valid_Session +
                             '/' +
                             friend.Number_Of_Total_Session}
                         </td>
                         {/* <td>{this.HistoryVisualize(friend.Session_History)}</td> */}
-                        <td>
-                          <Card className="flex-row">
+                        <td className="align-middle">
+                          <Card className="flex-row p-2">
                             {this.HistoryTruncate(friend.Session_History).map(
-                              (record, i) => {
+                              (record, i, array) => {
                                 return (
-                                  <CardImg
-                                    key={i}
-                                    className="card-img-left"
-                                    src={record ? checkImage : xImage}
-                                    style={{ width: 'auto', height: 20 }}
-                                  />
+                                  <div key={i} className="mr-3">
+                                    <div>{getSessionStatus(i)}</div>
+                                    <div>{previousDate(array.length - i)}</div>
+                                  </div>
                                 );
                               },
                             )}
                           </Card>
                         </td>
-                        <td className="no-print">
+                        <td className="align-middle no-print">
                           <ButtonGroup>
                             <UncontrolledButtonDropdown>
                               <DropdownToggle color="primary" caret>

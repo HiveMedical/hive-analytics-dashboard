@@ -96,7 +96,7 @@ class Header extends React.Component {
     this.userinfo = authToken.getUserinfo();
     var stitle = 'HIVE';
     if (this.userinfo && this.userinfo.Role === 1){
-      stitle = 'HIVE - Doctor';
+      stitle = 'HIVE - Provider';
     }
 
     return (

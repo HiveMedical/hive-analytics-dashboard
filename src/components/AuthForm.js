@@ -361,7 +361,7 @@ AuthForm.defaultProps = {
     placeholder: 'hive@hive.com',
     inputvalue: '',
   },
-  DoctorIdLabel: 'Doctor ID',
+  DoctorIdLabel: 'Provider ID',
   DoctorIdInputProps: {
     type: 'string',
     placeholder: 'Doctors ID',

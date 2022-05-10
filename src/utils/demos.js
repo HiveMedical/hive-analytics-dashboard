@@ -1,5 +1,22 @@
-import random from 'faker/lib/random';
+import faker from 'faker';
 
 export const randomNum = (min = 0, max = 1000) => {
-  return random().number({ min, max });
+  return faker.random.number({ min, max });
+};
+
+export const getSessionStatus = i => {
+  if (i % 3 === 0) {
+    return '🔴';
+  }
+  if (i % 4 === 0) {
+    return '🟡';
+  }
+  return '🟢';
+};
+
+export const previousDate = days => {
+  const today = new Date();
+  const month = String(today.getMonth() + 1).padStart(2, 0);
+  const day = String(today.getDate() - days).padStart(2, 0);
+  return `${month}/${day}`;
 };

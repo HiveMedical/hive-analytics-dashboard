@@ -122,7 +122,7 @@ class Sidebar extends React.Component {
     var stitle = 'HIVE';
     if (userinfo && userinfo.Role === 1) {
       doctor_classname = 'doctorview';
-      stitle = 'HIVE - Doctor';
+      stitle = 'HIVE - Provider';
     }
     this.decideSidebar();
     return (

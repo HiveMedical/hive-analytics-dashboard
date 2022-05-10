@@ -154,7 +154,7 @@ class SchedulePage extends React.Component {
                           <th>Weekday</th>
                           <th>Time</th>
                           <th>Drug Prescribed</th>
-                          <th>Doctor</th>
+                          <th>Provider</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -165,7 +165,7 @@ class SchedulePage extends React.Component {
                                 <td>{this.state.week_arr[idx]}</td>
                                 <td>{friend[0] + ' - ' + friend[1]}</td>
                                 <td>{bigfriend.Prescription}</td>
-                                <td>Doctor 1</td>
+                                <td>Provider 1</td>
                               </tr>
                             );
                           })}
