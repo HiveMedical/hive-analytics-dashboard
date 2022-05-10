@@ -2,39 +2,15 @@ import logo200Image from 'assets/img/logo/hive-logo.png';
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import SourceLink from 'components/SourceLink';
 import React from 'react';
-import { FaGithub } from 'react-icons/fa';
 import {
-  MdAccountCircle,
-  MdArrowDropDownCircle,
-  MdBorderAll,
-  MdBrush,
-  MdChromeReaderMode,
   MdDashboard,
-  MdExtension,
-  MdGroupWork,
   MdInsertChart,
-  MdKeyboardArrowDown,
-  MdNotificationsActive,
-  MdPages,
-  MdRadioButtonChecked,
-  MdSend,
-  MdStar,
-  MdTextFields,
-  MdViewCarousel,
-  MdViewDay,
   MdViewList,
   MdWeb,
   MdWidgets,
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
-import {
-  // UncontrolledTooltip,
-  Collapse,
-  Nav,
-  Navbar,
-  NavItem,
-  NavLink as BSNavLink,
-} from 'reactstrap';
+import { Nav, Navbar, NavItem, NavLink as BSNavLink } from 'reactstrap';
 import bn from 'utils/bemnames';
 import authToken from 'utils/authToken';
 
@@ -43,43 +19,6 @@ const sidebarBackground = {
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
 };
-
-const navComponents = [
-  { to: '/buttons', name: 'buttons', exact: false, Icon: MdRadioButtonChecked },
-  {
-    to: '/button-groups',
-    name: 'button groups',
-    exact: false,
-    Icon: MdGroupWork,
-  },
-  { to: '/forms', name: 'forms', exact: false, Icon: MdChromeReaderMode },
-  { to: '/input-groups', name: 'input groups', exact: false, Icon: MdViewList },
-  {
-    to: '/dropdowns',
-    name: 'dropdowns',
-    exact: false,
-    Icon: MdArrowDropDownCircle,
-  },
-  { to: '/badges', name: 'badges', exact: false, Icon: MdStar },
-  { to: '/alerts', name: 'alerts', exact: false, Icon: MdNotificationsActive },
-  { to: '/progress', name: 'progress', exact: false, Icon: MdBrush },
-  { to: '/modals', name: 'modals', exact: false, Icon: MdViewDay },
-];
-
-const navContents = [
-  { to: '/typography', name: 'typography', exact: false, Icon: MdTextFields },
-  { to: '/tables', name: 'tables', exact: false, Icon: MdBorderAll },
-];
-
-const pageContents = [
-  { to: '/login', name: 'login / signup', exact: false, Icon: MdAccountCircle },
-  {
-    to: '/login-modal',
-    name: 'login modal',
-    exact: false,
-    Icon: MdViewCarousel,
-  },
-];
 
 var navItems = [
   { to: '/dashboard', name: 'dashboard', exact: true, Icon: MdDashboard },
@@ -110,46 +49,88 @@ class Sidebar extends React.Component {
   decideSidebar() {
     var token = authToken.getToken();
     var userinfo = authToken.getUserinfo();
-    if(!token){
-      navItems = [{to: '/login-modal', name: 'Login', exact: true, Icon: MdDashboard}];
-    }else{
-      if(userinfo.Role == 1){ // doctor view
+    if (!token) {
+      navItems = [
+        { to: '/login-modal', name: 'Login', exact: true, Icon: MdDashboard },
+      ];
+    } else {
+      if (userinfo.Role === 1) {
+        // doctor view
         navItems = [
           { to: '/', name: 'Patients', exact: true, Icon: MdWidgets },
-          { to: '/doctor-patientdashboard/-1', name: 'dashboard', exact: false, Icon: MdDashboard },
-          { to: '/doctor-devicelist/-1', name: 'All Devices', exact: false, Icon: MdWeb },
-          { to: '/doctor-patientschedule/-1', name: 'Patient Schedule', exact: false, Icon: MdInsertChart },
-          { to: '/schedule-form', name: 'Make Schedule', exact: false, Icon: MdInsertChart },
-          { to: '/doctor-patientchart/-1', name: 'Charts', exact: false, Icon: MdInsertChart },
+          {
+            to: '/doctor-patientdashboard/-1',
+            name: 'dashboard',
+            exact: false,
+            Icon: MdDashboard,
+          },
+          {
+            to: '/doctor-devicelist/-1',
+            name: 'All Devices',
+            exact: false,
+            Icon: MdWeb,
+          },
+          {
+            to: '/doctor-patientschedule/-1',
+            name: 'Patient Schedule',
+            exact: false,
+            Icon: MdInsertChart,
+          },
+          {
+            to: '/schedule-form',
+            name: 'Make Schedule',
+            exact: false,
+            Icon: MdInsertChart,
+          },
+          {
+            to: '/doctor-patientchart/-1',
+            name: 'Charts',
+            exact: false,
+            Icon: MdInsertChart,
+          },
           //{ to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },
         ];
-      }else{
+      } else {
         navItems = [
-          { to: '/dashboard', name: 'dashboard', exact: true, Icon: MdDashboard },
+          {
+            to: '/dashboard',
+            name: 'dashboard',
+            exact: true,
+            Icon: MdDashboard,
+          },
           { to: '/cards', name: 'Device', exact: false, Icon: MdWeb },
-          { to: '/schedule', name: 'Schedule', exact: false, Icon: MdInsertChart },
+          {
+            to: '/schedule',
+            name: 'Schedule',
+            exact: false,
+            Icon: MdInsertChart,
+          },
           { to: '/charts', name: 'Charts', exact: false, Icon: MdViewList },
           //{ to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },
         ];
       }
     }
-  };
+  }
 
   componentDidMount() {
     this.decideSidebar();
-  };
+  }
 
   render() {
     var userinfo = authToken.getUserinfo();
     var doctor_classname = '';
     var stitle = 'HIVE';
-    if(userinfo && userinfo.Role == 1){
+    if (userinfo && userinfo.Role === 1) {
       doctor_classname = 'doctorview';
       stitle = 'HIVE - Doctor';
     }
     this.decideSidebar();
     return (
-      <aside id={doctor_classname} className={bem.b()} data-image={sidebarBgImage}>
+      <aside
+        id={doctor_classname}
+        className={bem.b()}
+        data-image={sidebarBgImage}
+      >
         <div className={bem.e('background')} style={sidebarBackground} />
         <div className={bem.e('content')}>
           <Navbar>
@@ -180,7 +161,7 @@ class Sidebar extends React.Component {
                 </BSNavLink>
               </NavItem>
             ))}
-{/* 
+            {/* 
             <NavItem
               className={bem.e('nav-item')}
               onClick={this.handleClick('Components')}

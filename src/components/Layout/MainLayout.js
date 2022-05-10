@@ -1,4 +1,4 @@
-import { Content, Footer, Header, Sidebar } from 'components/Layout';
+import { Content, Header, Sidebar } from 'components/Layout';
 import React from 'react';
 import {
   MdImportantDevices,
@@ -44,8 +44,7 @@ class MainLayout extends React.Component {
 
       this.notificationSystem.addNotification({
         title: <MdLoyalty />,
-        message:
-          'Hive provides the most accurate OPAT Adherence data!',
+        message: 'Hive provides the most accurate OPAT Adherence data!',
         level: 'info',
       });
     }, 2500);
