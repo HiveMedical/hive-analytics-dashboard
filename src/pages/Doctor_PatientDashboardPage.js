@@ -13,6 +13,7 @@ import {
   DropdownItem,
 } from 'reactstrap';
 import AuthForm from '../components/AuthForm';
+import PatientMedicationChart from '../components/PatientMedicationChart';
 import _ from 'lodash';
 import authToken from 'utils/authToken';
 import { Redirect } from 'react-router';
@@ -456,6 +457,13 @@ class DashboardPage extends React.Component {
                   })}
               </tbody>
             </table>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <h3>Patient medication chart</h3>
+            <PatientMedicationChart />
           </Col>
         </Row>
       </Page>

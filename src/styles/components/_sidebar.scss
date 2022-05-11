@@ -1,7 +1,7 @@
 #doctorview.cr-sidebar {
   &::after {
-    background: #abc0fb; /* fallback for old browsers */
-    background: linear-gradient(to bottom, #6a82fb, #abc0fb);
+    background: #DDDEDE; /* fallback for old browsers */
+    background: linear-gradient(to bottom, #79A6A3, #DDDEDE);
   }
 }
 .cr-sidebar {
@@ -103,6 +103,7 @@
 
     + .cr-content {
       margin: 0 0 0 $cr-sidebar-width;
+      width: calc(100% - 224px);
       transition: margin 0.2s ease-in;
       @media print {
         margin: 0;

@@ -1,5 +1,4 @@
 import logo200Image from 'assets/img/logo/hive-logo.png';
-import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import SourceLink from 'components/SourceLink';
 import React from 'react';
 import {
@@ -13,12 +12,6 @@ import { NavLink } from 'react-router-dom';
 import { Nav, Navbar, NavItem, NavLink as BSNavLink } from 'reactstrap';
 import bn from 'utils/bemnames';
 import authToken from 'utils/authToken';
-
-const sidebarBackground = {
-  backgroundImage: `url("${sidebarBgImage}")`,
-  backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat',
-};
 
 var navItems = [
   { to: '/dashboard', name: 'dashboard', exact: true, Icon: MdDashboard },
@@ -64,12 +57,12 @@ class Sidebar extends React.Component {
             exact: false,
             Icon: MdDashboard,
           },
-          {
-            to: '/doctor-devicelist/-1',
-            name: 'All Devices',
-            exact: false,
-            Icon: MdWeb,
-          },
+          // {
+          //   to: '/doctor-devicelist/-1',
+          //   name: 'All Devices',
+          //   exact: false,
+          //   Icon: MdWeb,
+          // },
           {
             to: '/doctor-patientschedule/-1',
             name: 'Patient Schedule',
@@ -82,12 +75,12 @@ class Sidebar extends React.Component {
             exact: false,
             Icon: MdInsertChart,
           },
-          {
-            to: '/doctor-patientchart/-1',
-            name: 'Charts',
-            exact: false,
-            Icon: MdInsertChart,
-          },
+          // {
+          //   to: '/doctor-patientchart/-1',
+          //   name: 'Charts',
+          //   exact: false,
+          //   Icon: MdInsertChart,
+          // },
           //{ to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },
         ];
       } else {
@@ -126,12 +119,8 @@ class Sidebar extends React.Component {
     }
     this.decideSidebar();
     return (
-      <aside
-        id={doctor_classname}
-        className={bem.b()}
-        data-image={sidebarBgImage}
-      >
-        <div className={bem.e('background')} style={sidebarBackground} />
+      <aside id={doctor_classname} className={bem.b()}>
+        <div className={bem.e('background')} />
         <div className={bem.e('content')}>
           <Navbar>
             <SourceLink className="navbar-brand d-flex text-white">

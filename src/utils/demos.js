@@ -5,10 +5,10 @@ export const randomNum = (min = 0, max = 1000) => {
 };
 
 export const getSessionStatus = i => {
-  if (i % 3 === 0) {
+  if (i % 4 === 3) {
     return '🔴';
   }
-  if (i % 4 === 0) {
+  if (i % 4 === 2) {
     return '🟡';
   }
   return '🟢';
