@@ -372,7 +372,6 @@ const PatientMedicationChart = () => {
         gridTemplateColumns: '2.5rem auto',
         gridTemplateRows: 'auto 2.5rem',
         gridTemplateAreas: '"yLabels board" ". xLabels"',
-        height: 600,
       }}
     >
       <div
@@ -391,6 +390,7 @@ const PatientMedicationChart = () => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              fontSize: '0.75rem',
             }}
           >
             {24 - i}

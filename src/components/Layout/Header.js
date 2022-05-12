@@ -16,6 +16,7 @@ import {
   MdNotificationsNone,
   MdPersonPin,
   MdSettingsApplications,
+  MdPrint,
 } from 'react-icons/md';
 import {
   Button,
@@ -54,11 +55,11 @@ class Header extends React.Component {
     isNotificationConfirmed: false,
     isOpenUserCardPopover: false,
     token: null,
-    userinfo: null
+    userinfo: null,
   };
 
   static contextTypes = {
-    router: PropTypes.object
+    router: PropTypes.object,
   };
 
   signout = () => {
@@ -95,7 +96,7 @@ class Header extends React.Component {
     this.token = authToken.getToken();
     this.userinfo = authToken.getUserinfo();
     var stitle = 'HIVE';
-    if (this.userinfo && this.userinfo.Role === 1){
+    if (this.userinfo && this.userinfo.Role === 1) {
       stitle = 'HIVE - Provider';
     }
 
@@ -119,89 +120,122 @@ class Header extends React.Component {
           </Button>
         </Nav>
         <Nav navbar className="no-print">
-        {!!this.token &&
-          <SearchInput />
-        }
+          {!!this.token && <SearchInput />}
         </Nav>
 
-      {!!this.token &&
-        <Nav navbar className={`${bem.e('nav-right')} no-print`}>
-          <NavItem className="d-inline-flex">
-            <NavLink id="Popover1" className="position-relative">
-              {isNotificationConfirmed ? (
-                <MdNotificationsNone
+        {!!this.token && (
+          <Nav navbar className={`${bem.e('nav-right')} no-print`}>
+            <NavItem className="d-inline-flex">
+              <NavLink className="position-relative">
+                <MdPrint
                   size={25}
                   className="text-secondary can-click"
-                  onClick={this.toggleNotificationPopover}
+                  onClick={() => window.print()}
                 />
-              ) : (
-                <MdNotificationsActiveWithBadge
-                  size={25}
-                  className="text-secondary can-click animated swing infinite"
-                  onClick={this.toggleNotificationPopover}
-                />
-              )}
-            </NavLink>
-            <Popover
-              placement="bottom"
-              isOpen={this.state.isOpenNotificationPopover}
-              toggle={this.toggleNotificationPopover}
-              target="Popover1"
-            >
-              <PopoverBody>
-                <Notifications notificationsData={notificationsData} />
-              </PopoverBody>
-            </Popover>
-          </NavItem>
+              </NavLink>
+            </NavItem>
 
-          <NavItem>
-            <NavLink id="Popover2">
-              <Avatar
-                onClick={this.toggleUserCardPopover}
-                className="can-click"
-              />
-            </NavLink>
-            <Popover
-              placement="bottom-end"
-              isOpen={this.state.isOpenUserCardPopover}
-              toggle={this.toggleUserCardPopover}
-              target="Popover2"
-              className="p-0 border-0"
-              style={{ minWidth: 250 }}
-            >
-              <PopoverBody className="p-0 border-light">
-                <UserCard
-                  title={this.userinfo.User_Name}
-                  subtitle={this.userinfo.Email}
-                  text="Last updated 3 mins ago"
-                  className="border-light"
-                >
-                  <ListGroup flush>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdPersonPin /> Profile
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdInsertChart /> Stats
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdMessage /> Messages
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdSettingsApplications /> Settings
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdHelp /> Help
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light" onClick={this.signout}>
-                      <MdExitToApp /> Signout
-                    </ListGroupItem>
-                  </ListGroup>
-                </UserCard>
-              </PopoverBody>
-            </Popover>
-          </NavItem>
-        </Nav>
-      }
+            <NavItem className="d-inline-flex">
+              <NavLink id="Popover1" className="position-relative">
+                {isNotificationConfirmed ? (
+                  <MdNotificationsNone
+                    size={25}
+                    className="text-secondary can-click"
+                    onClick={this.toggleNotificationPopover}
+                  />
+                ) : (
+                  <MdNotificationsActiveWithBadge
+                    size={25}
+                    className="text-secondary can-click animated swing infinite"
+                    onClick={this.toggleNotificationPopover}
+                  />
+                )}
+              </NavLink>
+              <Popover
+                placement="bottom"
+                isOpen={this.state.isOpenNotificationPopover}
+                toggle={this.toggleNotificationPopover}
+                target="Popover1"
+              >
+                <PopoverBody>
+                  <Notifications notificationsData={notificationsData} />
+                </PopoverBody>
+              </Popover>
+            </NavItem>
+
+            <NavItem>
+              <NavLink id="Popover2">
+                <Avatar
+                  onClick={this.toggleUserCardPopover}
+                  className="can-click"
+                />
+              </NavLink>
+              <Popover
+                placement="bottom-end"
+                isOpen={this.state.isOpenUserCardPopover}
+                toggle={this.toggleUserCardPopover}
+                target="Popover2"
+                className="p-0 border-0"
+                style={{ minWidth: 250 }}
+              >
+                <PopoverBody className="p-0 border-light">
+                  <UserCard
+                    title={this.userinfo.User_Name}
+                    subtitle={this.userinfo.Email}
+                    text="Last updated 3 mins ago"
+                    className="border-light"
+                  >
+                    <ListGroup flush>
+                      <ListGroupItem
+                        tag="button"
+                        action
+                        className="border-light"
+                      >
+                        <MdPersonPin /> Profile
+                      </ListGroupItem>
+                      <ListGroupItem
+                        tag="button"
+                        action
+                        className="border-light"
+                      >
+                        <MdInsertChart /> Stats
+                      </ListGroupItem>
+                      <ListGroupItem
+                        tag="button"
+                        action
+                        className="border-light"
+                      >
+                        <MdMessage /> Messages
+                      </ListGroupItem>
+                      <ListGroupItem
+                        tag="button"
+                        action
+                        className="border-light"
+                      >
+                        <MdSettingsApplications /> Settings
+                      </ListGroupItem>
+                      <ListGroupItem
+                        tag="button"
+                        action
+                        className="border-light"
+                      >
+                        <MdHelp /> Help
+                      </ListGroupItem>
+                      <ListGroupItem
+                        tag="button"
+                        action
+                        className="border-light"
+                        onClick={this.signout}
+                      >
+                        <MdExitToApp /> Signout
+                      </ListGroupItem>
+                    </ListGroup>
+                  </UserCard>
+                </PopoverBody>
+              </Popover>
+            </NavItem>
+          </Nav>
+        )}
       </Navbar>
     );
   }
