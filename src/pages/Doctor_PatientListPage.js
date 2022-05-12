@@ -251,6 +251,23 @@ class Doctor_PatientListPage extends React.Component {
       ['User_ID'],
       'asc',
     );
+    for (const patient of patient_metric_list) {
+      if (patient.Session_History.length === 0) {
+        patient.Session_History = [false, false, false, false];
+      }
+    }
+    if (patient_metric_list.length > 0) {
+      patient_metric_list.push({
+        Number_Of_Total_Session: 0,
+        Number_Of_Valid_Session: 0,
+        Prescription_Drug: null,
+        Session_History: [false, false, false],
+        Total_Duration_Connected: 0,
+        User_ID: '3',
+        User_Type: 'fake',
+        User_Name: 'Hive-Jenny',
+      });
+    }
 
     return (
       <Page
@@ -281,11 +298,15 @@ class Doctor_PatientListPage extends React.Component {
                       >
                         <td className="align-middle">{friend.User_ID}</td>
                         <td className="align-middle">
-                          <Link
-                            to={`/doctor-patientdashboard/${friend.User_ID}`}
-                          >
-                            {friend.User_Name}
-                          </Link>
+                          {friend.User_Type === 'fake' ? (
+                            friend.User_Name
+                          ) : (
+                            <Link
+                              to={`/doctor-patientdashboard/${friend.User_ID}`}
+                            >
+                              {friend.User_Name}
+                            </Link>
+                          )}
                         </td>
                         <td className="align-middle">
                           {friend.Prescription_Drug}
@@ -372,7 +393,7 @@ class Doctor_PatientListPage extends React.Component {
                 <p>
                   This is for future training on the automatic classification of
                   "is a patient suitable for self-treatment?", which will affect
-                  the recommendation of OPAT for potential patients.
+                  the recommendation of IV Infusions for potential patients.
                 </p>
                 <p className="text-muted">
                   The patient will not see the label.

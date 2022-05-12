@@ -32,7 +32,7 @@ class MainLayout extends React.Component {
 
       this.notificationSystem.addNotification({
         title: <MdImportantDevices />,
-        message: `${AuthForm.defaultProps.usernameInputProps.inputvalue}, welcome to the Hive Dashboard!`,
+        message: `${AuthForm.defaultProps.usernameInputProps.inputvalue}, welcome to the HIVE Dashboard!`,
         level: 'info',
       });
     }, 1500);
@@ -44,7 +44,7 @@ class MainLayout extends React.Component {
 
       this.notificationSystem.addNotification({
         title: <MdLoyalty />,
-        message: 'Hive provides the most accurate OPAT Adherence data!',
+        message: 'HIVE provides the most accurate IV Infusions Adherence data!',
         level: 'info',
       });
     }, 2500);

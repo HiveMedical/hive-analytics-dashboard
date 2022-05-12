@@ -71,7 +71,7 @@ class Sidebar extends React.Component {
           },
           {
             to: '/schedule-form',
-            name: 'Make Schedule',
+            name: 'Modify Schedule',
             exact: false,
             Icon: MdInsertChart,
           },

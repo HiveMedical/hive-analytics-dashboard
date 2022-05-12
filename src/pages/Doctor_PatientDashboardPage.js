@@ -281,6 +281,7 @@ class DashboardPage extends React.Component {
         console.log(err);
       });
   }
+
   render() {
     var token = authToken.getToken();
     if (!token) {
@@ -299,7 +300,7 @@ class DashboardPage extends React.Component {
     var patient_data_metric = this.state.patient_data_metrics_list;
     patient_data_metric = _.orderBy(
       patient_data_metric,
-      ['Connection_Start'],
+      ['Disconnected_At'],
       'desc',
     );
     console.log('patient_data_metric: ', patient_data_metric);
@@ -311,7 +312,7 @@ class DashboardPage extends React.Component {
 
     return (
       <Page
-        className="DashboardPage"
+        className="DashboardPage pb-5"
         title={
           this.state.patient_list_key &&
           this.state.patient_list_key[this.state.pid] &&
