@@ -360,60 +360,12 @@ class DashboardPage extends React.Component {
         </Row>
 
         <Row>
-          <Col md={12}>
-            <h3>Patient Adherence</h3>
+          <Col>
+            <h3>Patient medication chart</h3>
+            <Card className="pr-3 py-3">
+              <PatientMedicationChart />
+            </Card>
           </Col>
-          <Col lg={3} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Total Duration (hours)"
-              //number={Math.trunc(this.state.dur/60)}
-              number={(totalDuration / 3600).toFixed(1)}
-              color="primary"
-              progress={{
-                value: 20,
-                // label: 'Last month',
-              }}
-            />
-          </Col>
-
-          <Col lg={4} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Number of Medication Sessions"
-              number={numOfSessions}
-              color="secondary"
-              progress={{
-                value: 20,
-                // label: 'Last month',
-              }}
-            />
-          </Col>
-
-          <Col lg={4} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Estimated Drug Intake"
-              // subtitle="Total: 500 ml"
-              number={(((totalDuration / 60) * 20) / 6).toFixed(0) + ' ml'}
-              subtitle="Assuming Flowrate = 200 mL/hr"
-              color="info"
-              progress={{
-                value: 30,
-                // label: 'Last month',
-              }}
-            />
-          </Col>
-
-          {/* <Col lg={3} md={6} sm={6} xs={12}>
-            <NumberWidget
-              title="Treatment Length"
-              subtitle="Total: 60 days"
-              number={this.state.TreatLen?this.state.TreatLen:0+" Days"}
-              color="warning"
-              progress={{
-                value: this.state.TreatLen?(this.state.TreatLen/0.6).toFixed(2):0,
-                // label: 'Last month',
-              }}
-            />
-          </Col> */}
         </Row>
 
         <Row>
@@ -457,15 +409,6 @@ class DashboardPage extends React.Component {
                     })}
                 </tbody>
               </Table>
-            </Card>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <h3>Patient medication chart</h3>
-            <Card className="py-3">
-              <PatientMedicationChart />
             </Card>
           </Col>
         </Row>
