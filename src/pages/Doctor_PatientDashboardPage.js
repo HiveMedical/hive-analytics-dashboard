@@ -7,6 +7,7 @@ import {
   CardHeader,
   Col,
   Row,
+  Table,
   UncontrolledButtonDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -418,53 +419,54 @@ class DashboardPage extends React.Component {
         <Row>
           <Col lg={12} md={12} sm={12} xs={12}>
             <h3>Patient's sessions</h3>
-            <table className="table table-hover">
-              <thead>
-                <tr>
-                  <th>Device</th>
-                  <th>Connection Start</th>
-                  <th>Connection Stop</th>
-                  <th>Duration (s)</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.isArray(patient_data_metric) &&
-                  patient_data_metric.map(friend => {
-                    return (
-                      <tr key={friend.Connection_ID}>
-                        <td>
-                          {friend.Device_Name
-                            ? friend.Device_Name
-                            : friend.Device_ID}
-                        </td>
-                        <td>{friend.Connection_Start}</td>
-                        <td>{friend.Disconnected_At}</td>
-                        <td>
-                          {this.Timeformat(friend.Connection_Duration_Sec)}
-                        </td>
-                        <td
-                          className={
-                            friend.Incorrect_Duration ? 'text-secondary' : ''
-                          }
-                        >
-                          {this.DurationStatus(
-                            friend.Connection_Duration_Sec,
-                            friend.Prescription_Duration,
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
+            <Card>
+              <Table responsive hover>
+                <thead>
+                  <tr>
+                    <th className='border-0'>Device</th>
+                    <th className='border-0'>Connection Start</th>
+                    <th className='border-0'>Connection Stop</th>
+                    <th className='border-0'>Duration (s)</th>
+                    <th className='border-0'>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.isArray(patient_data_metric) &&
+                    patient_data_metric.map(friend => {
+                      return (
+                        <tr key={friend.Connection_ID}>
+                          <td>
+                            {friend.Device_Name
+                              ? friend.Device_Name
+                              : friend.Device_ID}
+                          </td>
+                          <td>{friend.Connection_Start}</td>
+                          <td>{friend.Disconnected_At}</td>
+                          <td>
+                            {this.Timeformat(friend.Connection_Duration_Sec)}
+                          </td>
+                          <td
+                            className={
+                              friend.Incorrect_Duration ? 'text-secondary' : ''
+                            }
+                          >
+                            {friend.Session_Status}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </Table>
+            </Card>
           </Col>
         </Row>
 
         <Row>
           <Col>
             <h3>Patient medication chart</h3>
-            <PatientMedicationChart />
+            <Card className="py-3">
+              <PatientMedicationChart />
+            </Card>
           </Col>
         </Row>
       </Page>

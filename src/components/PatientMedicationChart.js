@@ -6,9 +6,9 @@ const HOUR = 60 * MINUTE;
 const MINUTES_PER_DAY = 60 * 24;
 const Timing = { good: 'good', warn: 'warn', invalid: 'invalid' };
 const ColorByTiming = {
-  [Timing.good]: 'rgb(50, 205, 50, 0.75)',
-  [Timing.warn]: 'rgb(255, 200, 0, 0.75)',
-  [Timing.invalid]: 'rgb(255, 69, 0, 0.75)',
+  [Timing.good]: '#96B83D',
+  [Timing.warn]: 'gold',
+  [Timing.invalid]: 'red',
 };
 
 const mockMedications = [
@@ -31,8 +31,8 @@ const mockMedications = [
           endTime: '5/2/2022, 4:00 PM',
         },
         actual: {
-          startTime: '5/2/2022, 3:00 PM',
-          endTime: '5/2/2022, 5:00 PM',
+          startTime: '5/2/2022, 2:00 PM',
+          endTime: '5/2/2022, 4:00 PM',
         },
       },
       {
@@ -374,29 +374,8 @@ const PatientMedicationChart = () => {
         gridTemplateAreas: '"yLabels board" ". xLabels"',
       }}
     >
-      <div
-        id="y-axis-labels"
-        style={{
-          gridArea: 'yLabels',
-          display: 'grid',
-          gridAutoFlow: 'row',
-        }}
-      >
-        {Array.from({ length: 25 }, (_, i) => (
-          <div
-            key={i}
-            id="y-axis-label"
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontSize: '0.75rem',
-            }}
-          >
-            {24 - i}
-          </div>
-        ))}
-      </div>
+      {/* <Legends /> */}
+      <YAxisLabels />
       <div
         style={{
           gridArea: 'board',
@@ -414,27 +393,73 @@ const PatientMedicationChart = () => {
           <Day key={date} medicationResults={medicationResults} />
         ))}
       </div>
-      <div
-        id="x-axis-labels"
-        style={{ gridArea: 'xLabels', display: 'grid', gridAutoFlow: 'column' }}
-      >
-        {mockMedications.map(({ date }) => (
-          <div
-            key={date}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontWeight: 'bold',
-            }}
-          >
-            {date}
-          </div>
-        ))}
-      </div>
+      <XAxisLabels />
     </div>
   );
 };
+
+const Legends = () => (
+  <div
+    id="legends"
+    style={{
+      display: 'flex',
+      justifyContent: 'flex-end',
+      columnGap: '1rem',
+    }}
+  >
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+);
+
+const XAxisLabels = () => (
+  <div
+    id="x-axis-labels"
+    style={{ gridArea: 'xLabels', display: 'grid', gridAutoFlow: 'column' }}
+  >
+    {mockMedications.map(({ date }) => (
+      <div
+        key={date}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '0.75rem',
+          fontWeight: 'bold',
+        }}
+      >
+        {date}
+      </div>
+    ))}
+  </div>
+);
+
+const YAxisLabels = () => (
+  <div
+    id="y-axis-labels"
+    style={{
+      gridArea: 'yLabels',
+      display: 'grid',
+      gridAutoFlow: 'row',
+    }}
+  >
+    {Array.from({ length: 25 }, (_, i) => (
+      <div
+        key={i}
+        id="y-axis-label"
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '0.75rem',
+        }}
+      >
+        {24 - i}
+      </div>
+    ))}
+  </div>
+);
 
 const Expected = ({ startTime, endTime }) => {
   const endMinutes =
@@ -449,9 +474,9 @@ const Expected = ({ startTime, endTime }) => {
         position: 'absolute',
         height,
         top,
-        left: '25%',
-        width: '20%',
-        backgroundColor: 'rgba(0, 191, 255, 0.75)',
+        left: 'calc(50% - 0.625rem)',
+        width: '0.5rem',
+        backgroundColor: '#79A6A3',
       }}
     />
   );
@@ -470,8 +495,8 @@ const Actual = ({ startTime, endTime, timing }) => {
         position: 'absolute',
         height,
         top,
-        left: '55%',
-        width: '20%',
+        left: 'calc(50% + 0.125rem)',
+        width: '0.5rem',
         backgroundColor: ColorByTiming[timing],
       }}
     />

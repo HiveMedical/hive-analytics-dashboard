@@ -1,7 +1,7 @@
 #doctorview.cr-sidebar {
   &::after {
-    background: #DDDEDE; /* fallback for old browsers */
-    background: linear-gradient(to bottom, #79A6A3, #DDDEDE);
+    background: #37666E; /* fallback for old browsers */
+    background: linear-gradient(to bottom, #334A53, #37666E);
   }
 }
 .cr-sidebar {
@@ -45,8 +45,8 @@
   &::after {
     z-index: 3;
     // sublime light
-    background: #fc5c7d; /* fallback for old browsers */
-    background: linear-gradient(to bottom, #6a82fb, #fc5c7d);
+    background: #37666E; /* fallback for old browsers */
+    background: linear-gradient(to bottom, #334A53, #37666E);
     opacity: 1;
   }
 

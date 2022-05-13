@@ -1,4 +1,4 @@
-import logo200Image from 'assets/img/logo/hive-logo.png';
+import logo200Image from 'assets/img/logo/hive-logo-color.png';
 import Avatar from 'components/Avatar';
 import { UserCard } from 'components/Card';
 import Notifications from 'components/Notifications';
@@ -46,7 +46,7 @@ const MdNotificationsActiveWithBadge = withBadge({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  children: <small>5</small>,
+  children: <small>2</small>,
 })(MdNotificationsActive);
 
 class Header extends React.Component {
@@ -109,7 +109,7 @@ class Header extends React.Component {
               width="40"
               height="30"
               className="pr-2"
-              alt=""
+              alt="logo"
             />
             {stitle}
           </div>
@@ -129,7 +129,7 @@ class Header extends React.Component {
               <NavLink className="position-relative">
                 <MdPrint
                   size={25}
-                  className="text-secondary can-click"
+                  className="text-primary can-click"
                   onClick={() => window.print()}
                 />
               </NavLink>
@@ -140,13 +140,13 @@ class Header extends React.Component {
                 {isNotificationConfirmed ? (
                   <MdNotificationsNone
                     size={25}
-                    className="text-secondary can-click"
+                    className="text-primary can-click"
                     onClick={this.toggleNotificationPopover}
                   />
                 ) : (
                   <MdNotificationsActiveWithBadge
                     size={25}
-                    className="text-secondary can-click animated swing infinite"
+                    className="text-primary can-click animated swing infinite"
                     onClick={this.toggleNotificationPopover}
                   />
                 )}

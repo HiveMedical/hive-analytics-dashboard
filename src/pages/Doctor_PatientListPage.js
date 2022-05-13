@@ -8,6 +8,7 @@ import {
   Col,
   Row,
   Modal,
+  Table,
   ModalBody,
   ModalFooter,
   ModalHeader,
@@ -23,7 +24,7 @@ import authToken from 'utils/authToken';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { previousDate, getSessionStatus } from '../utils/demos';
+import { formatDate, getSessionStatus } from '../utils/demos';
 
 class Doctor_PatientListPage extends React.Component {
   constructor(props) {
@@ -251,23 +252,6 @@ class Doctor_PatientListPage extends React.Component {
       ['User_ID'],
       'asc',
     );
-    for (const patient of patient_metric_list) {
-      if (patient.Session_History.length === 0) {
-        patient.Session_History = [false, false, false, false];
-      }
-    }
-    if (patient_metric_list.length > 0) {
-      patient_metric_list.push({
-        Number_Of_Total_Session: 0,
-        Number_Of_Valid_Session: 0,
-        Prescription_Drug: null,
-        Session_History: [false, false, false],
-        Total_Duration_Connected: 0,
-        User_ID: '3',
-        User_Type: 'fake',
-        User_Name: 'Hive-Jenny',
-      });
-    }
 
     return (
       <Page
@@ -277,106 +261,105 @@ class Doctor_PatientListPage extends React.Component {
       >
         <Row>
           <Col lg={12} md={12} sm={12} xs={12}>
-            <table className="table table-hover">
-              <thead>
-                <tr className="align-middle text-center">
-                  <th>User ID</th>
-                  <th>User Name</th>
-                  <th>Prescribed Drug</th>
-                  <th>Valid / Total Session</th>
-                  <th>Session History</th>
-                  <th className="no-print">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.isArray(patient_metric_list) &&
-                  patient_metric_list.map(friend => {
-                    return (
-                      <tr
-                        className="text-center align-middle"
-                        key={friend.User_ID}
-                      >
-                        <td className="align-middle">{friend.User_ID}</td>
-                        <td className="align-middle">
-                          {friend.User_Type === 'fake' ? (
-                            friend.User_Name
-                          ) : (
+            <Card className="pb-0">
+              <Table hover>
+                <thead>
+                  <tr className="align-middle text-center">
+                    <th className="border-0">User ID</th>
+                    <th className="border-0">User Name</th>
+                    <th className="border-0">Prescribed Drug</th>
+                    <th className="border-0">Valid / Total Session</th>
+                    <th className="border-0">Session History</th>
+                    <th className="border-0 no-print">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.isArray(patient_metric_list) &&
+                    patient_metric_list.map(friend => {
+                      return (
+                        <tr
+                          className="text-center align-middle"
+                          key={friend.User_ID}
+                        >
+                          <td className="align-middle">{friend.User_ID}</td>
+                          <td className="align-middle">
                             <Link
                               to={`/doctor-patientdashboard/${friend.User_ID}`}
                             >
                               {friend.User_Name}
                             </Link>
-                          )}
-                        </td>
-                        <td className="align-middle">
-                          {friend.Prescription_Drug}
-                        </td>
-                        <td className="align-middle">
-                          {friend.Number_Of_Valid_Session +
-                            '/' +
-                            friend.Number_Of_Total_Session}
-                        </td>
-                        {/* <td>{this.HistoryVisualize(friend.Session_History)}</td> */}
-                        <td className="align-middle">
-                          <Card className="flex-row p-2">
-                            {this.HistoryTruncate(friend.Session_History).map(
-                              (record, i, array) => {
-                                return (
-                                  <div key={i} className="mr-3">
-                                    <div>{getSessionStatus(i)}</div>
-                                    <div>{previousDate(array.length - i)}</div>
-                                  </div>
-                                );
-                              },
-                            )}
-                          </Card>
-                        </td>
-                        <td className="align-middle no-print">
-                          <ButtonGroup>
-                            <UncontrolledButtonDropdown>
-                              <DropdownToggle color="primary" caret>
-                                Action
-                              </DropdownToggle>
-                              <DropdownMenu>
-                                <DropdownItem
-                                  onClick={this.toggle(
-                                    'backdrop',
-                                    null,
-                                    friend,
-                                  )}
-                                >
-                                  Label
-                                </DropdownItem>
-                                <DropdownItem
-                                  onClick={() =>
-                                    this.goredirect(
-                                      'doctor-patientdashboard',
-                                      friend.User_ID,
-                                    )
-                                  }
-                                >
-                                  Dashboard
-                                </DropdownItem>
-                                <DropdownItem
-                                  onClick={() =>
-                                    this.goredirect(
-                                      'doctor-devicelist',
-                                      friend.User_ID,
-                                    )
-                                  }
-                                >
-                                  Device
-                                </DropdownItem>
-                                <DropdownItem>Edit</DropdownItem>
-                              </DropdownMenu>
-                            </UncontrolledButtonDropdown>
-                          </ButtonGroup>
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
+                          </td>
+                          <td className="align-middle">
+                            {friend.Prescription_Drug}
+                          </td>
+                          <td className="align-middle">
+                            {friend.Number_Of_Valid_Session +
+                              '/' +
+                              friend.Number_Of_Total_Session}
+                          </td>
+                          <td className="align-middle">
+                            <Card className="flex-row p-2">
+                              {this.HistoryTruncate(friend.Session_History).map(
+                                (record, i, array) => {
+                                  return (
+                                    <div key={i} className="mr-3">
+                                      <div>{getSessionStatus(record)}</div>
+                                      <div>
+                                        {formatDate(record.Disconnected_At)}
+                                      </div>
+                                    </div>
+                                  );
+                                },
+                              )}
+                            </Card>
+                          </td>
+                          <td className="align-middle no-print">
+                            <ButtonGroup>
+                              <UncontrolledButtonDropdown>
+                                <DropdownToggle color="primary" caret>
+                                  Action
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                  <DropdownItem
+                                    onClick={this.toggle(
+                                      'backdrop',
+                                      null,
+                                      friend,
+                                    )}
+                                  >
+                                    Label
+                                  </DropdownItem>
+                                  <DropdownItem
+                                    onClick={() =>
+                                      this.goredirect(
+                                        'doctor-patientdashboard',
+                                        friend.User_ID,
+                                      )
+                                    }
+                                  >
+                                    Dashboard
+                                  </DropdownItem>
+                                  <DropdownItem
+                                    onClick={() =>
+                                      this.goredirect(
+                                        'doctor-devicelist',
+                                        friend.User_ID,
+                                      )
+                                    }
+                                  >
+                                    Device
+                                  </DropdownItem>
+                                  <DropdownItem>Edit</DropdownItem>
+                                </DropdownMenu>
+                              </UncontrolledButtonDropdown>
+                            </ButtonGroup>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </Table>
+            </Card>
             <Modal
               isOpen={this.state.modal_backdrop}
               toggle={this.toggle('backdrop')}

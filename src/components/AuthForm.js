@@ -1,4 +1,4 @@
-import logo200Image from 'assets/img/logo/hive-logo.png';
+import logo200Image from 'assets/img/logo/hive-logo-white.png';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -187,8 +187,7 @@ class AuthForm extends React.Component {
           <div className="text-center pb-4">
             <img
               src={logo200Image}
-              className="rounded"
-              style={{ width: 60, height: 60, cursor: 'pointer' }}
+              style={{ width: 40, height: 30, cursor: 'pointer' }}
               alt="logo"
               onClick={onLogoClick}
             />

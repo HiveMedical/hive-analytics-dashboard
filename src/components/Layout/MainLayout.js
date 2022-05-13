@@ -1,10 +1,6 @@
 import { Content, Header, Sidebar } from 'components/Layout';
 import React from 'react';
-import {
-  MdImportantDevices,
-  // MdCardGiftcard,
-  MdLoyalty,
-} from 'react-icons/md';
+import { MdAlarm, MdReportProblem } from 'react-icons/md';
 import NotificationSystem from 'react-notification-system';
 import { NOTIFICATION_SYSTEM_STYLE } from 'utils/constants';
 import AuthForm from '../AuthForm';
@@ -31,8 +27,8 @@ class MainLayout extends React.Component {
       }
 
       this.notificationSystem.addNotification({
-        title: <MdImportantDevices />,
-        message: `${AuthForm.defaultProps.usernameInputProps.inputvalue}, welcome to the HIVE Dashboard!`,
+        title: <MdAlarm />,
+        message: `Jake has missed multiple medication times`,
         level: 'info',
       });
     }, 1500);
@@ -43,8 +39,8 @@ class MainLayout extends React.Component {
       }
 
       this.notificationSystem.addNotification({
-        title: <MdLoyalty />,
-        message: 'HIVE provides the most accurate IV Infusions Adherence data!',
+        title: <MdReportProblem />,
+        message: "Aravindh's patient info needs attention",
         level: 'info',
       });
     }, 2500);

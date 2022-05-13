@@ -4,11 +4,11 @@ export const randomNum = (min = 0, max = 1000) => {
   return faker.random.number({ min, max });
 };
 
-export const getSessionStatus = i => {
-  if (i % 4 === 3) {
+export const getSessionStatus = record => {
+  if (record.Session_Status === 'Short') {
     return '🔴';
   }
-  if (i % 4 === 2) {
+  if (record.Session_Status === 'Long') {
     return '🟡';
   }
   return '🟢';
@@ -20,3 +20,10 @@ export const previousDate = days => {
   const day = String(today.getDate() - days).padStart(2, 0);
   return `${month}/${day}`;
 };
+
+export const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const month = String(date.getMonth() + 1).padStart(2, 0);
+  const day = String(date.getDate()).padStart(2, 0);
+  return `${month}/${day}`;
+}

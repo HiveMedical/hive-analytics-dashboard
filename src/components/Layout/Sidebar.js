@@ -1,4 +1,4 @@
-import logo200Image from 'assets/img/logo/hive-logo.png';
+import logo200Image from 'assets/img/logo/hive-logo-white.png';
 import SourceLink from 'components/SourceLink';
 import React from 'react';
 import {
