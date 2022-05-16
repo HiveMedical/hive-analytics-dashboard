@@ -359,7 +359,7 @@ class DashboardPage extends React.Component {
           </Col>
         </Row>
 
-        <Row>
+        <Row className="no-print">
           <Col>
             <h3>Patient medication chart</h3>
             <Card className="pr-3 py-3">
@@ -399,7 +399,7 @@ class DashboardPage extends React.Component {
                           </td>
                           <td
                             className={
-                              friend.Incorrect_Duration ? 'text-secondary' : ''
+                              friend.Session_Status === 'Correct' ? 'text-success' : 'text-danger'
                             }
                           >
                             {friend.Session_Status}

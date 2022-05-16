@@ -112,10 +112,10 @@ class Sidebar extends React.Component {
   render() {
     var userinfo = authToken.getUserinfo();
     var doctor_classname = '';
-    var stitle = 'HIVE';
+    var stitle = '';
     if (userinfo && userinfo.Role === 1) {
       doctor_classname = 'doctorview';
-      stitle = 'HIVE - Provider';
+      stitle = 'Provider';
     }
     this.decideSidebar();
     return (
@@ -123,14 +123,11 @@ class Sidebar extends React.Component {
         <div className={bem.e('background')} />
         <div className={bem.e('content')}>
           <Navbar>
-            <SourceLink className="navbar-brand d-flex text-white">
-              <img
-                src={logo200Image}
-                width="40"
-                height="30"
-                className="pr-2"
-                alt=""
-              />
+            <SourceLink
+              className="navbar-brand d-flex text-white"
+              style={{ columnGap: '0.75rem' }}
+            >
+              <img src={logo200Image} width="40" height="30" alt="logo" />
               {stitle}
             </SourceLink>
           </Navbar>

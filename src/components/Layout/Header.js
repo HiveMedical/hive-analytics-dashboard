@@ -95,22 +95,19 @@ class Header extends React.Component {
     const { isNotificationConfirmed } = this.state;
     this.token = authToken.getToken();
     this.userinfo = authToken.getUserinfo();
-    var stitle = 'HIVE';
+    var stitle = '';
     if (this.userinfo && this.userinfo.Role === 1) {
-      stitle = 'HIVE - Provider';
+      stitle = 'Provider';
     }
 
     return (
       <Navbar light expand className={bem.b('bg-white')}>
         <Nav navbar className="mr-2 only-print">
-          <div className="d-flex align-items-center">
-            <img
-              src={logo200Image}
-              width="40"
-              height="30"
-              className="pr-2"
-              alt="logo"
-            />
+          <div
+            className="d-flex align-items-center"
+            style={{ columnGap: '0.75rem' }}
+          >
+            <img src={logo200Image} width="40" height="30" alt="logo" />
             {stitle}
           </div>
         </Nav>
