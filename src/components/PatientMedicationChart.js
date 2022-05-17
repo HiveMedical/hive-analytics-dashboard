@@ -1,8 +1,9 @@
 import React from 'react';
+import { formatDate } from '../utils/demos';
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
-const HOUR = 60 * MINUTE;
+// const HOUR = 60 * MINUTE;
 const MINUTES_PER_DAY = 60 * 24;
 const Timing = {
   prescribed: 'prescribed',
@@ -19,7 +20,7 @@ const ColorByTiming = {
 
 const mockMedications = [
   {
-    date: '05/02',
+    date: formatDate('05/02'),
     sessionHistory: [
       {
         expected: {
@@ -57,7 +58,7 @@ const mockMedications = [
     ],
   },
   {
-    date: '05/03',
+    date: formatDate('05/03'),
     sessionHistory: [
       {
         expected: {
@@ -95,7 +96,7 @@ const mockMedications = [
     ],
   },
   {
-    date: '05/04',
+    date: formatDate('05/04'),
     sessionHistory: [
       {
         expected: {
@@ -133,7 +134,7 @@ const mockMedications = [
     ],
   },
   {
-    date: '05/05',
+    date: formatDate('05/05'),
     sessionHistory: [
       {
         expected: {
@@ -171,7 +172,7 @@ const mockMedications = [
     ],
   },
   {
-    date: '05/06',
+    date: formatDate('05/06'),
     sessionHistory: [
       {
         expected: {
@@ -209,7 +210,7 @@ const mockMedications = [
     ],
   },
   {
-    date: '05/07',
+    date: formatDate('05/07'),
     sessionHistory: [
       {
         expected: {
@@ -247,7 +248,7 @@ const mockMedications = [
     ],
   },
   {
-    date: '05/08',
+    date: formatDate('05/08'),
     sessionHistory: [
       {
         expected: {

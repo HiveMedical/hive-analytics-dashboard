@@ -14,16 +14,13 @@ export const getSessionStatus = record => {
   return '🟢';
 };
 
-export const previousDate = days => {
-  const today = new Date();
-  const month = String(today.getMonth() + 1).padStart(2, 0);
-  const day = String(today.getDate() - days).padStart(2, 0);
-  return `${month}/${day}`;
-};
-
-export const formatDate = (dateString) => {
+export const formatDate = dateString => {
   const date = new Date(dateString);
-  const month = String(date.getMonth() + 1).padStart(2, 0);
-  const day = String(date.getDate()).padStart(2, 0);
-  return `${month}/${day}`;
-}
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+  }).format(date);
+  // const month = String(date.getMonth() + 1).padStart(2, 0);
+  // const day = String(date.getDate()).padStart(2, 0);
+  // return `${month}/${day}`;
+};
