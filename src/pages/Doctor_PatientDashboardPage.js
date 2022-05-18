@@ -298,12 +298,7 @@ class DashboardPage extends React.Component {
     console.log('pd_sorted', pd_sorted);
 
     // Get the patient metric data list
-    var patient_data_metric = this.state.patient_data_metrics_list;
-    patient_data_metric = _.orderBy(
-      patient_data_metric,
-      ['Disconnected_At'],
-      'desc',
-    );
+    var patient_data_metric = this.state.patient_data_metrics_list.sort((a, b) => new Date(b.Disconnected_At) - new Date(a.Disconnected_At));
     console.log('patient_data_metric: ', patient_data_metric);
 
     // Calculate Total Duration Connected
