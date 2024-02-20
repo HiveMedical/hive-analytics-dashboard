@@ -22,6 +22,7 @@
     "react-ga": "^2.5.7",
     "react-icons": "^3.5.0",
     "react-infinite-calendar": "^2.3.1",
+    "react-scripts": "2.1.8",
     "react-notification-system": "^0.2.17",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
@@ -33,7 +34,7 @@
   "devDependencies": {
     "gh-pages": "^1.2.0",
     "node-sass": "^4.11.0",
-    "react-scripts": "2.1.8",
+    //"react-scripts": "2.1.8",
     "serve": "^10.1.2",
     "stylelint": "^9.3.0",
     "stylelint-config-recommended-scss": "^3.2.0",
