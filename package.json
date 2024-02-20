@@ -30,10 +30,10 @@
     "react-sizeme": "^2.5.2",
     "reactstrap": "^7.1.0",
     "victory": "^32.0.0"
+    "node-sass": "^4.11.0",
   },
   "devDependencies": {
     "gh-pages": "^1.2.0",
-    "node-sass": "^4.11.0",
     "serve": "^10.1.2",
     "stylelint": "^9.3.0",
     "stylelint-config-recommended-scss": "^3.2.0",
