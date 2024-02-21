@@ -530,7 +530,6 @@ class DashboardPage extends React.Component {
                         <td>{friend.Disconnected_At}</td>
                         <td>{friend.duration}</td>
                         <td>{friend.Session_Status}</td>
-                        </td>
                       </tr>
                     );
                   })}
