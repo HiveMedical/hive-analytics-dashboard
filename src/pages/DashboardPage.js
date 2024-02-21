@@ -17,7 +17,7 @@ class DashboardPage extends React.Component {
       Connection_Start: 0,
       Disconnected_At: 0,
       Device_ID: '',
-      Connection_Duration_Sec,
+      Connection_Duration_Sec:'',
       TreatLen: 0,
     };
   }
