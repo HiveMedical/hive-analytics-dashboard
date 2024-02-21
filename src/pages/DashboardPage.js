@@ -119,10 +119,10 @@ class DashboardPage extends React.Component {
             if (self.Timeparse2sec(item.Disconnected_At) <= first_dis) {
               first_dis = self.Timeparse2sec(item.Disconnected_At);
               first_state = item;
-            }
+            } /*
             item.duration =
               self.Timeparse2sec(item.Disconnected_At) -
-              self.Timeparse2sec(item.Connection_Start);
+              self.Timeparse2sec(item.Connection_Start); */
           });
           if (response.body.patientdata.length > 0) {
             console.log("latest_state dur: ",latest_state.Connection_Duration_Sec);
