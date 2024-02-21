@@ -529,24 +529,7 @@ class DashboardPage extends React.Component {
                         <td>{friend.Connection_Start}</td>
                         <td>{friend.Disconnected_At}</td>
                         <td>{friend.duration}</td>
-                        <td
-                          className={
-                            ((this.Timeparse2sec(friend.Disconnected_At) -
-                              this.Timeparse2sec(friend.Connection_Start)) *
-                              20) /
-                              5 >
-                            550
-                              ? 'text-secondary'
-                              : ''
-                          }
-                        >
-                          {((this.Timeparse2sec(friend.Disconnected_At) -
-                            this.Timeparse2sec(friend.Connection_Start)) *
-                            20) /
-                            5 >
-                          550
-                            ? 'Overdose'
-                            : 'Normal'}
+                        <td>{friend.Session_Status}</td>
                         </td>
                       </tr>
                     );
