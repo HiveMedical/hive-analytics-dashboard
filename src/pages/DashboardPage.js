@@ -125,7 +125,7 @@ class DashboardPage extends React.Component {
           });
           if (response.body.patientdata.length > 0) {
             self.Dsum(
-              latest_state.Duration, // prev:               self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(latest_state.Connection_Start),
+              latest_state.Connection_Duration_Sec, // prev:               self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(latest_state.Connection_Start),
               response.body.patientdata.length,
               self.Timeparse2sec(latest_state.Connection_Start),
               self.Timeparse2sec(latest_state.Disconnected_At),
