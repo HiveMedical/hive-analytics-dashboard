@@ -17,6 +17,7 @@ class DashboardPage extends React.Component {
       Connection_Start: 0,
       Disconnected_At: 0,
       Device_ID: '',
+      Connection_Duration_Sec,
       TreatLen: 0,
     };
   }
@@ -28,6 +29,7 @@ class DashboardPage extends React.Component {
     Disconnected_At,
     Device_ID,
     Session_Status,
+    Connection_Duration_Sec,
     len,
   ) {
     this.setState({
@@ -37,6 +39,7 @@ class DashboardPage extends React.Component {
       Disconnected_At: Disconnected_At,
       Device_ID: Device_ID,
       Session_Status: Session_Status,
+      Connection_Duration_Sec: Connection_Duration_Sec,
       TreatLen: len,
     });
   }
@@ -134,6 +137,7 @@ class DashboardPage extends React.Component {
               self.Timeparse2sec(latest_state.Disconnected_At),
               latest_state.Device_ID,
               latest_state.Session_Status,
+              latest_state.Connection_Duration_Sec,
               (latest_state.Connection_Duration_Sec / 60 / 60 / 24).toFixed(2), //old  (  (self.Timeparse2sec(latest_state.Disconnected_At) -   self.Timeparse2sec(first_state.Disconnected_At)) /   60 / 60 /   24         ).toFixed(2),
             );
             self.setState({ PatData: response.body.patientdata });
@@ -528,7 +532,7 @@ class DashboardPage extends React.Component {
                         </td>
                         <td>{friend.Connection_Start}</td>
                         <td>{friend.Disconnected_At}</td>
-                        <td>{friend.duration}</td>
+                        <td>{friend.Connection_Duration_Sec}</td>
                         <td>{friend.Session_Status}</td>
                       </tr>
                     );
