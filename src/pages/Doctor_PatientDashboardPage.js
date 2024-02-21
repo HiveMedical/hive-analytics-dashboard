@@ -163,7 +163,8 @@ class DashboardPage extends React.Component {
     console.log('this patient_list_key', this.state.patient_list_key);
 
     fetch(
-      'https://cxlnioef6d.execute-api.us-west-1.amazonaws.com/521_getPatientData_stage/',
+      //'https://cxlnioef6d.execute-api.us-west-1.amazonaws.com/521_getPatientData_stage/',
+      'https://fyab3djam7.execute-api.us-west-1.amazonaws.com/521_GetPatientDataMetrics_Stage/',
       {
         method: 'POST',
         headers: {
