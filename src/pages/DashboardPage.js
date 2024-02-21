@@ -27,6 +27,7 @@ class DashboardPage extends React.Component {
     Connection_Start,
     Disconnected_At,
     Device_ID,
+    Session_Status,
     len,
   ) {
     this.setState({
@@ -124,12 +125,12 @@ class DashboardPage extends React.Component {
           });
           if (response.body.patientdata.length > 0) {
             self.Dsum(
-              self.Timeparse2sec(latest_state.Disconnected_At) -
-                self.Timeparse2sec(latest_state.Connection_Start),
+              latest_state.Duration, // prev:               self.Timeparse2sec(latest_state.Disconnected_At) - self.Timeparse2sec(latest_state.Connection_Start),
               response.body.patientdata.length,
               self.Timeparse2sec(latest_state.Connection_Start),
               self.Timeparse2sec(latest_state.Disconnected_At),
               latest_state.Device_ID,
+              latest_state.Session_Status,
               (
                 (self.Timeparse2sec(latest_state.Disconnected_At) -
                   self.Timeparse2sec(first_state.Disconnected_At)) /
