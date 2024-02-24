@@ -108,12 +108,8 @@ class DashboardPage extends React.Component {
               color="info"
               progress={{
                 value: (estimatedDrugIntake / maxIntake) * 100,
-                label: `${((estimatedDrugIntake / maxIntake) * 100).toFixed(2)}`,
+                label: `${(estimatedDrugIntake / maxIntake) * 100}%`,
               }}
-              //progress={{
-                //value: (estimatedDrugIntake / maxIntake) * 100,
-                //label: `${(estimatedDrugIntake / maxIntake) * 100}%`,
-              //}}
             />
           </Col>
 
