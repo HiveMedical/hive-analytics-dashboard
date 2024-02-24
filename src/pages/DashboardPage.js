@@ -90,52 +90,40 @@ class DashboardPage extends React.Component {
           </Col>
 
           <Col lg={3} md={6} sm={6} xs={12}>
-          <NumberWidget
-            title="Total Duration Connected (sec)"
-            number={`${totalDuration.toFixed(2)}`}
-            color="primary"
-            progress={{
-              value: ((totalDuration / maxDuration) * 100).toFixed(2),
-              label: `Goal: ${maxDuration} Sec`,
-            }}
-          />
-        </Col>
+            <NumberWidget
+              title="Number of Medication Sessions"
+              number={sessionCount}
+              color="secondary"
+              progress={{
+                value: (sessionCount / maxSessions) * 100,
+                label: `${(sessionCount / maxSessions) * 100}%`,
+              }}
+            />
+          </Col>
 
-        <Col lg={3} md={6} sm={6} xs={12}>
-          <NumberWidget
-            title="Number of Medication Sessions"
-            number={`${sessionCount.toFixed(2)}`}
-            color="secondary"
-            progress={{
-              value: ((sessionCount / maxSessions) * 100).toFixed(2),
-              label: `Goal: ${maxSessions} Sessions`,
-            }}
-          />
-        </Col>
+          <Col lg={3} md={6} sm={6} xs={12}>
+            <NumberWidget
+              title="Estimated Drug Intake"
+              number={`${estimatedDrugIntake} ml`}
+              color="info"
+              progress={{
+                value: (estimatedDrugIntake / maxIntake) * 100,
+                label: `Goal: ${maxIntake} ml',
+              }}
+            />
+          </Col>
 
-        <Col lg={3} md={6} sm={6} xs={12}>
-          <NumberWidget
-            title="Estimated Drug Intake"
-            number={`${estimatedDrugIntake.toFixed(2)} ml`}
-            color="info"
-            progress={{
-              value: ((estimatedDrugIntake / maxIntake) * 100).toFixed(2),
-              label: `Goal: ${maxIntake} ml`,
-            }}
-          />
-        </Col>
-
-        <Col lg={3} md={6} sm={6} xs={12}>
-          <NumberWidget
-            title="Treatment Length"
-            number={`${treatmentLength.toFixed(2)} Days`}
-            color="warning"
-            progress={{
-              value: ((treatmentLength / maxTreatmentDays) * 100).toFixed(2),
-              label: `Goal: ${maxTreatmentDays} Days`,
-            }}
-          />
-        </Col>
+          <Col lg={3} md={6} sm={6} xs={12}>
+            <NumberWidget
+              title="Treatment Length"
+              number={`${treatmentLength} Days`}
+              color="warning"
+              progress={{
+                value: (treatmentLength / maxTreatmentDays) * 100,
+                label: `${(treatmentLength / maxTreatmentDays * 100).toFixed(2)}%`,
+              }}
+            />
+          </Col>
         </Row>
 
         {/* Session Table */}
