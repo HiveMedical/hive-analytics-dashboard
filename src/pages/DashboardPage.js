@@ -17,7 +17,7 @@ class DashboardPage extends React.Component {
       treatmentLength: 0,
       maxDuration: 3600, // Example maximum duration in seconds
       maxSessions: 30, // Example maximum number of sessions
-      maxIntake: 60000, // Example maximum drug intake in ml
+      maxIntake: 1000, // Example maximum drug intake in ml
       maxTreatmentDays: 1, // Example maximum treatment length in days
     };
   }
@@ -54,7 +54,7 @@ class DashboardPage extends React.Component {
   processData(patientData) {
     const sortedData = _.orderBy(patientData, data => new Date(data.Disconnected_At), ['desc']);
     const totalDuration = sortedData.reduce((total, session) => total + parseInt(session.Connection_Duration_Sec, 10), 0);
-    const estimatedDrugIntake = totalDuration * 20; // Assuming 20ml per second as an example
+    const estimatedDrugIntake = totalDuration * 0.1; // Assuming 20ml per second as an example
     const treatmentLength = (totalDuration / 60 / 60 / 24).toFixed(2); // Convert seconds to days
 
     this.setState({
