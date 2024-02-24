@@ -16,11 +16,10 @@ class DashboardPage extends React.Component {
       deviceInfo: '',
       estimatedDrugIntake: 0,
       treatmentLength: 0,
-      // Assuming these are your targets or maximums for the progress bars
       maxDuration: 3600, // Example maximum duration in seconds
       maxSessions: 30, // Example maximum number of sessions
-      maxIntake: 60000, // Example maximum drug intake in ml
-      maxTreatmentDays: 90, // Example maximum treatment length in days
+      maxIntake: 50000, // Example maximum drug intake in ml
+      maxTreatmentDays: 30, // Example maximum treatment length in days
     };
   }
 
@@ -129,10 +128,7 @@ class DashboardPage extends React.Component {
             />
           </Col>
         </Row>
-        {/* Additional Rows and Cols as needed */}
-      </Page>
-    );
-  }
-}
-
-export default DashboardPage;
+        <Row>
+          <Col lg={12} md={12} sm={12} xs={12}>
+            <h3>Sessions</h3>
+            <table
