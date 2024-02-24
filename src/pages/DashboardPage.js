@@ -13,13 +13,12 @@ class DashboardPage extends React.Component {
       PatData: [],
       totalDuration: 0,
       sessionCount: 0,
-      deviceInfo: '',
       estimatedDrugIntake: 0,
       treatmentLength: 0,
       maxDuration: 3600, // Example maximum duration in seconds
       maxSessions: 30, // Example maximum number of sessions
-      maxIntake: 50000, // Example maximum drug intake in ml
-      maxTreatmentDays: 30, // Example maximum treatment length in days
+      maxIntake: 60000, // Example maximum drug intake in ml
+      maxTreatmentDays: 90, // Example maximum treatment length in days
     };
   }
 
@@ -39,24 +38,21 @@ class DashboardPage extends React.Component {
         User_ID: userinfo.User_ID,
       }),
     })
-    .then(response => response.json())
-    .then(response => {
-      if (response.statusCode === 200 && response.body.state === 1) {
-        this.processData(response.body.patientdata);
-      }
-    })
-    .catch(err => {
-      console.error(err);
-    });
+      .then(response => response.json())
+      .then(response => {
+        if (response.statusCode === 200 && response.body.state === 1) {
+          this.processData(response.body.patientdata);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
 
     console.log('Scanning for Patient Data.');
   }
 
   processData(patientData) {
-    const sortedData = _.orderBy(patientData, (data) => {
-      return new Date(data.Disconnected_At);
-    }, ['desc']);
-
+    const sortedData = _.orderBy(patientData, data => new Date(data.Disconnected_At), ['desc']);
     const totalDuration = sortedData.reduce((total, session) => total + parseInt(session.Connection_Duration_Sec, 10), 0);
     const estimatedDrugIntake = totalDuration * 20; // Assuming 20ml per second as an example
     const treatmentLength = (totalDuration / 60 / 60 / 24).toFixed(2); // Convert seconds to days
@@ -80,6 +76,7 @@ class DashboardPage extends React.Component {
     return (
       <Page className="DashboardPage" title="Patient Adherence">
         <Row>
+          {/* Widgets with progress bars */}
           <Col lg={3} md={6} sm={6} xs={12}>
             <NumberWidget
               title="Total Duration Connected (sec)"
@@ -128,7 +125,7 @@ class DashboardPage extends React.Component {
             />
           </Col>
         </Row>
+
+        {/* Session Table */}
         <Row>
-          <Col lg={12} md={12} sm={12} xs={12}>
-            <h3>Sessions</h3>
-            <table
+          <Col lg={12} md={12} sm={12}
