@@ -1,3 +1,4 @@
+import Page from 'components/Page';
 import React from 'react';
 import { Col, Row } from 'reactstrap';
 import NumberWidget from 'components/Widget/NumberWidget';
