@@ -128,4 +128,35 @@ class DashboardPage extends React.Component {
 
         {/* Session Table */}
         <Row>
-          <Col lg={12} md={12} sm={12}
+          <Col lg={12} md={12} sm={12} xs={12}>
+            <h3>Sessions</h3>
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  <th>Device</th>
+                  <th>Connection Start</th>
+                  <th>Connection Stop</th>
+                  <th>Duration (s)</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.PatData.map((session, index) => (
+                  <tr key={index}>
+                    <td>{session.Device_ID}</td>
+                    <td>{session.Connection_Start}</td>
+                    <td>{session.Disconnected_At}</td>
+                    <td>{session.Connection_Duration_Sec}</td>
+                    <td>{session.Session_Status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Col>
+        </Row>
+      </Page>
+    );
+  }
+}
+
+export default DashboardPage;
