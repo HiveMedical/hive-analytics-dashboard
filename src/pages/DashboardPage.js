@@ -18,7 +18,7 @@ class DashboardPage extends React.Component {
       maxDuration: 3600, // Example maximum duration in seconds
       maxSessions: 30, // Example maximum number of sessions
       maxIntake: 1000, // Example maximum drug intake in ml
-      maxTreatmentDays: 1, // Example maximum treatment length in days
+      maxTreatmentDays: 0.05, // Example maximum treatment length in days
     };
   }
 
