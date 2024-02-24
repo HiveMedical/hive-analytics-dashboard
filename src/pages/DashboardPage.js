@@ -83,8 +83,8 @@ class DashboardPage extends React.Component {
               number={totalDuration}
               color="primary"
               progress={{
-                //value: (totalDuration / maxDuration) * 100,
-                label: `${(totalDuration / maxDuration) * 100}%`,
+                value: ((totalDuration / maxDuration) * 100).toFixed(2),
+                //label: `${(totalDuration / maxDuration) * 100}%`,
               }}
             />
           </Col>
@@ -95,8 +95,8 @@ class DashboardPage extends React.Component {
               number={sessionCount}
               color="secondary"
               progress={{
-                //value: (sessionCount / maxSessions) * 100,
-                label: `${(sessionCount / maxSessions) * 100}%`,
+                value: ((sessionCount / maxSessions) * 100).toFixed(2),
+                //label: `${(sessionCount / maxSessions) * 100}%`,
               }}
             />
           </Col>
@@ -107,7 +107,7 @@ class DashboardPage extends React.Component {
               number={`${estimatedDrugIntake} ml`}
               color="info"
               progress={{
-                value: (estimatedDrugIntake / maxIntake) * 100,
+                value: ((estimatedDrugIntake / maxIntake) * 100).toFixed(2),
                 //label: `${(estimatedDrugIntake / maxIntake) * 100}%`,
               }}
             />
@@ -119,7 +119,7 @@ class DashboardPage extends React.Component {
               number={`${treatmentLength} Days`}
               color="warning"
               progress={{
-                value: (treatmentLength / maxTreatmentDays) * 100,
+                value: ((treatmentLength / maxTreatmentDays) * 100).toFixed(2),
                 //label: `${(treatmentLength / maxTreatmentDays * 100).toFixed(2)}%`,
               }}
             />
