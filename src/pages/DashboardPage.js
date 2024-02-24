@@ -18,7 +18,7 @@ class DashboardPage extends React.Component {
       maxDuration: 3600, // Example maximum duration in seconds
       maxSessions: 30, // Example maximum number of sessions
       maxIntake: 60000, // Example maximum drug intake in ml
-      maxTreatmentDays: 90, // Example maximum treatment length in days
+      maxTreatmentDays: 1, // Example maximum treatment length in days
     };
   }
 
@@ -120,7 +120,7 @@ class DashboardPage extends React.Component {
               color="warning"
               progress={{
                 value: (treatmentLength / maxTreatmentDays) * 100,
-                label: `${(treatmentLength / maxTreatmentDays) * 100}%`,
+                label: `${(treatmentLength / maxTreatmentDays * 100).toFixed(2)}%`,
               }}
             />
           </Col>
