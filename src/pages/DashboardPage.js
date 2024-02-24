@@ -1,7 +1,8 @@
 import React from 'react';
-import { Col, Row, Redirect } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import NumberWidget from 'components/Widget/NumberWidget';
 import authToken from 'utils/authToken';
+import { Redirect } from 'react-router-dom';
 import _ from 'lodash';
 
 class DashboardPage extends React.Component {
